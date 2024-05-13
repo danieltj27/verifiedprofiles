@@ -1,0 +1,17 @@
+services:
+    danieltj.verifiedprofiles.listener:
+        class: danieltj\verifiedprofiles\event\listener
+        arguments:
+            - '@request'
+            - '@template'
+            - '@danieltj.verifiedprofiles.core.functions'
+        tags:
+            - { name: event.listener }
+
+    danieltj.verifiedprofiles.core.functions:
+        class: danieltj\verifiedprofiles\core\functions
+        arguments:
+            - '@dbal.conn'
+            - '%core.table_prefix%'
+            - '%core.root_path%'
+            - '%core.php_ext%'

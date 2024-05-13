@@ -1,0 +1,22 @@
+/**
+ * css
+ */
+
+.verifiedprofiles__verified {
+
+	background-color: transparent;
+	background-image: url( './images/verifiedprofiles/tick.svg' );
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: 16px;
+
+	width: 16px;
+	height: 16px;
+	margin: 0;
+	display: inline-block;
+
+	font-size: 0;
+
+	vertical-align: text-bottom;
+
+}

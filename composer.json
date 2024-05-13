@@ -1,0 +1,30 @@
+{
+    "name": "danieltj/verifiedprofiles",
+    "type": "phpbb-extension",
+    "description": "Verify your users by adding a check mark next to their name.",
+    "version": "2.0.0",
+    "license": "GPL-2.0-only",
+    "authors": [
+        {
+            "name": "Daniel James",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.0",
+        "composer/installers": "~1.0.0",
+        "phpbb/phpbb": ">=3.3.1"
+    },
+    "extra": {
+        "display-name": "Verified Profiles",
+        "soft-require": {
+            "phpbb/phpbb": ">=3.3.11"
+        },
+        "version-check": {
+            "host": "www.phpbb.com",
+            "directory": "/customise/db/extension/verified_profiles",
+            "filename": "version_check",
+            "ssl": true
+        }
+    }
+}
