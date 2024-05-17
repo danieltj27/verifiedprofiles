@@ -1,3 +1,5 @@
+[![Verified Profiles](./.github/gh-verified-profiles.png)](https://www.phpbb.com/customise/db/extension/verified_profiles/)
+
 # Verified Profiles
 
 Adds the ability to verify your forum users.
