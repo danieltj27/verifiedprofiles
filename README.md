@@ -2,7 +2,7 @@
 
 # Verified Profiles
 
-Adds the ability to verify your forum users.
+Add a verification badge to user profiles on your forum.
 
 ## Install
 
