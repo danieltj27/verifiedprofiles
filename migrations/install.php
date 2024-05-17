@@ -2,42 +2,47 @@
 
 /**
  * @package Verified Profiles
- * @copyright (c) 2023 Daniel James
+ * @copyright (c) 2024 Daniel James
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  */
 
 namespace danieltj\verifiedprofiles\migrations;
 
-class initial_install extends \phpbb\db\migration\migration {
+class install extends \phpbb\db\migration\migration {
 
 	/**
 	 * Check extension is installed.
 	 */
 	public function effectively_installed() {
 
-		return $this->db_tools->sql_column_exists( $this->table_prefix . 'users', 'user_verified' );
+		return ( $this->db_tools->sql_column_exists( $this->table_prefix . 'users', 'user_verified' ) && $this->db_tools->sql_column_exists( $this->table_prefix . 'users', 'user_verify_visibility' ) );
 
 	}
 
 	/**
-	 * Require at least 3.3.x version.
+	 * Require 3.3 or later
 	 */
 	static public function depends_on() {
 
-		return [ '\phpbb\db\migration\data\v33x\v331rc1' ];
+		return [ '\phpbb\db\migration\data\v33x\v330rc1' ];
 
 	}
 
 	/**
-	 * Run the 'up' function.
+	 * Install
 	 */
 	public function update_schema() {
 
 		return [
 			'add_columns' => [
 				$this->table_prefix . 'users' => [
-					'user_verified'	=> [
-						'UINT', 0
+					'user_verified' => [
+						'UINT:1', 0
+					]
+				],
+				$this->table_prefix . 'users' => [
+					'user_verify_visibility' => [
+						'UINT:1', 1
 					]
 				]
 			]
@@ -46,7 +51,7 @@ class initial_install extends \phpbb\db\migration\migration {
 	}
 
 	/**
-	 * Run the 'down' function.
+	 * Uninstall
 	 */
 	public function revert_schema() {
 
@@ -54,6 +59,9 @@ class initial_install extends \phpbb\db\migration\migration {
 			'drop_columns' => [
 				$this->table_prefix . 'users' => [
 					'user_verified'
+				],
+				$this->table_prefix . 'users' => [
+					'user_verify_visibility'
 				]
 			]
 		];

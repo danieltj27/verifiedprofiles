@@ -2,11 +2,11 @@
 
 /**
  * @package Verified Profiles
- * @copyright (c) 2023 Daniel James
+ * @copyright (c) 2024 Daniel James
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  */
 
-namespace danieltj\verifiedprofiles\core;
+namespace danieltj\verifiedprofiles\includes;
 
 use phpbb\db\driver\driver_interface as database;
 use phpbb\notification\manager as notifications;

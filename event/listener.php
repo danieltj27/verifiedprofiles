@@ -2,7 +2,7 @@
 
 /**
  * @package Verified Profiles
- * @copyright (c) 2023 Daniel James
+ * @copyright (c) 2024 Daniel James
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  */
 
@@ -10,7 +10,7 @@ namespace danieltj\verifiedprofiles\event;
 
 use phpbb\request\request;
 use phpbb\template\template;
-use danieltj\verifiedprofiles\core\functions;
+use danieltj\verifiedprofiles\includes\functions;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class listener implements EventSubscriberInterface {
@@ -68,14 +68,8 @@ class listener implements EventSubscriberInterface {
 	 */
 	public function add_languages( $event ) {
 
-		$lang_set_ext = $event[ 'lang_set_ext' ];
-
-		$lang_set_ext[] = [
-			'ext_name' => 'danieltj/verifiedprofiles',
-			'lang_set' => 'verifiedprofiles',
-		];
-
-		$event[ 'lang_set_ext' ] = $lang_set_ext;
+		// Add language file
+		$this->language->add_lang( [ 'common', 'permissions' ], 'danieltj/verifiedprofiles' );
 
 	}
 

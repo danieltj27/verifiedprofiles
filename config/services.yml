@@ -4,12 +4,12 @@ services:
         arguments:
             - '@request'
             - '@template'
-            - '@danieltj.verifiedprofiles.core.functions'
+            - '@danieltj.verifiedprofiles.includes.functions'
         tags:
             - { name: event.listener }
 
-    danieltj.verifiedprofiles.core.functions:
-        class: danieltj\verifiedprofiles\core\functions
+    danieltj.verifiedprofiles.includes.functions:
+        class: danieltj\verifiedprofiles\includes\functions
         arguments:
             - '@dbal.conn'
             - '%core.table_prefix%'
