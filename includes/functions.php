@@ -9,7 +9,6 @@
 namespace danieltj\verifiedprofiles\includes;
 
 use phpbb\db\driver\driver_interface as database;
-use phpbb\notification\manager as notifications;
 
 final class functions {
 

@@ -11,9 +11,8 @@ namespace danieltj\verifiedprofiles\event;
 use phpbb\request\request;
 use phpbb\template\template;
 use danieltj\verifiedprofiles\includes\functions;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class listener implements EventSubscriberInterface {
+class listener {
 
 	/**
 	 * @var request
@@ -47,8 +46,8 @@ class listener implements EventSubscriberInterface {
 	static public function getSubscribedEvents() {
 
 		return [
-			'core.user_setup'								=> 'add_languages',
-			'core.page_header_after'						=> 'page_header_after',
+			'core.user_setup'								=> 'extension_init',
+			'core.page_header_after'						=> 'add_template_vars',
 			'core.acp_users_modify_profile'					=> 'acp_modify_profile',
 			'core.acp_users_profile_modify_sql_ary'			=> 'acp_user_sql_ary',
 			'core.display_forums_modify_template_vars'		=> 'forumlist_template_vars',
@@ -64,9 +63,9 @@ class listener implements EventSubscriberInterface {
 	}
 
 	/**
-	 * Add languages.
+	 * Start the extension
 	 */
-	public function add_languages( $event ) {
+	public function extension_init( $event ) {
 
 		// Add language file
 		$this->language->add_lang( [ 'common', 'permissions' ], 'danieltj/verifiedprofiles' );
@@ -74,9 +73,9 @@ class listener implements EventSubscriberInterface {
 	}
 
 	/**
-	 * Add badge for logged in and verified user.
+	 * Add verified template variable
 	 */
-	public function page_header_after( $event ) {
+	public function add_template_vars( $event ) {
 
 		global $user;
 
