@@ -18,29 +18,11 @@ final class functions {
 	protected $db;
 
 	/**
-	 * @var string
+	 * Constructor
 	 */
-	protected $table_prefix;
-
-	/**
-	 * @var string
-	 */
-	protected $root_path;
-
-	/**
-	 * @var string
-	 */
-	protected $php_ext;
-
-	/**
-	 * Constructor.
-	 */
-	public function __construct( database $db, string $table_prefix, string $root_path, string $php_ext ) {
+	public function __construct( database $db ) {
 
 		$this->db = $db;
-		$this->table_prefix = $table_prefix;
-		$this->root_path = $root_path;
-		$this->php_ext = $php_ext;
 
 	}
 

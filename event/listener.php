@@ -41,7 +41,7 @@ class listener {
 	}
 
 	/**
-	 * You're all invited.
+	 * Register events
 	 */
 	static public function getSubscribedEvents() {
 

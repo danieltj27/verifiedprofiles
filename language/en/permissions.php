@@ -19,10 +19,5 @@ if ( empty( $lang ) || ! is_array( $lang ) ) {
 }
 
 $lang = array_merge( $lang, [
-	'VERIFIED' => 'Verified',
-	'VERIFIED_TOOLTIP' => 'User is verified',
-	'VERIFIED_LABEL' => 'Verification',
-	'VERIFIED_SETTING_YES' => 'Enable',
-	'VERIFIED_SETTING_NO' => 'Disable',
-	'VERIFIED_EXPLAIN' => 'Enable to display a verified badge next to the username.',
+	'PERMISSIONS_PLACEHOLDER' => 'PLACEHOLDER',
 ] );
