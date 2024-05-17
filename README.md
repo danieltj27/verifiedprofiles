@@ -1,6 +1,6 @@
 # Verified Profiles
 
-Verify your users by adding a check mark next to their name.
+Adds the ability to verify your forum users.
 
 ## Install
 
