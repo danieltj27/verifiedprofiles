@@ -11,7 +11,7 @@ namespace danieltj\verifiedprofiles\migrations;
 class install extends \phpbb\db\migration\migration {
 
 	/**
-	 * Check extension is installed.
+	 * Check installation
 	 */
 	public function effectively_installed() {
 
@@ -20,7 +20,7 @@ class install extends \phpbb\db\migration\migration {
 	}
 
 	/**
-	 * Require 3.3 or later
+	 * Require 3.3.x or later
 	 */
 	static public function depends_on() {
 
