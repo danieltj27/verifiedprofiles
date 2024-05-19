@@ -75,9 +75,7 @@ final class functions {
 	}
 
 	/**
-	 * Check if user has hidden their badge.
-	 * 
-	 * @todo check permission to hide badge
+	 * Check if the user has hidden their badge.
 	 * 
 	 * @param  integer $user_id The user ID to check against.
 	 * @return boolean          The badge visibility status (is or is not).
@@ -155,7 +153,7 @@ final class functions {
 	}
 
 	/**
-	 * Check if a user is in a verified group.
+	 * Check if the user is in a verified group.
 	 * 
 	 * @param  integer $user_id The user ID to check against.
 	 * @return boolean          The group verification status (is or is not).

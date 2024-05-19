@@ -11,7 +11,7 @@ namespace danieltj\verifiedprofiles\migrations;
 class install extends \phpbb\db\migration\migration {
 
 	/**
-	 * Check is installed
+	 * Check installation
 	 */
 	public function effectively_installed() {
 
@@ -77,7 +77,7 @@ class install extends \phpbb\db\migration\migration {
 	}
 
 	/**
-	 * Add new permissions
+	 * Add the new permission
 	 */
 	public function update_data() {
 

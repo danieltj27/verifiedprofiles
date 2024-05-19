@@ -11,13 +11,13 @@ namespace danieltj\verifiedprofiles;
 class ext extends \phpbb\extension\base {
 
 	/**
-	 * Require >=3.2
+	 * Require 3.3.x or later
 	 */
 	public function is_enableable() {
 
 		$config = $this->container->get( 'config' );
 
-		return phpbb_version_compare( $config[ 'version' ], '3.3', '>=' );
+		return phpbb_version_compare( $config[ 'version' ], '3.3.0', '>=' );
 
 	}
 

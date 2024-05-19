@@ -61,7 +61,7 @@ class listener implements EventSubscriberInterface {
 	static public function getSubscribedEvents() {
 
 		return [
-			'core.user_setup'						=> 'add_language_files',
+			'core.user_setup'						=> 'add_languages',
 			'core.permissions'						=> 'add_permissions',
 			'core.modify_username_string'			=> 'update_username_string',
 			'core.acp_users_modify_profile'			=> 'acp_modify_profile',
@@ -76,16 +76,16 @@ class listener implements EventSubscriberInterface {
 	}
 
 	/**
-	 * Add extension languages
+	 * Add languages
 	 */
-	public function add_language_files( $event ) {
+	public function add_languages( $event ) {
 
 		$this->language->add_lang( [ 'common', 'permissions' ], 'danieltj/verifiedprofiles' );
 
 	}
 
 	/**
-	 * Add new permissions
+	 * Add permissions
 	 */
 	public function add_permissions( $event ) {
 
@@ -94,7 +94,7 @@ class listener implements EventSubscriberInterface {
 	}
 
 	/**
-	 * Update username string
+	 * Add verified badge to verified usernames
 	 */
 	public function update_username_string( $event ) {
 
@@ -144,7 +144,7 @@ class listener implements EventSubscriberInterface {
 	}
 
 	/**
-	 * Add template variables
+	 * Add group template variables
 	 */
 	public function add_group_verified_setting( $event ) {
 
