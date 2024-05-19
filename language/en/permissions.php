@@ -19,5 +19,5 @@ if ( empty( $lang ) || ! is_array( $lang ) ) {
 }
 
 $lang = array_merge( $lang, [
-	'PERMISSIONS_PLACEHOLDER' => 'PLACEHOLDER',
+	'ACL_U_HIDE_VERIFIED_BADGE' => 'Can hide verification badge',
 ] );

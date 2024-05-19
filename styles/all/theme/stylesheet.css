@@ -21,14 +21,8 @@
 
 }
 
-a.header-avatar span:after {
+a.header-avatar span.vp-verified-badge:after {
 
 	display: none;
-
-}
-
-a.header-avatar span:last-of-type:after {
-
-	display: inline-block;
 
 }

@@ -2,6 +2,7 @@ services:
     danieltj.verifiedprofiles.listener:
         class: danieltj\verifiedprofiles\event\listener
         arguments:
+            - '@auth'
             - '@request'
             - '@template'
             - '@language'

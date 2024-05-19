@@ -11,11 +11,15 @@ namespace danieltj\verifiedprofiles\migrations;
 class install extends \phpbb\db\migration\migration {
 
 	/**
-	 * Check installation
+	 * Check is installed
 	 */
 	public function effectively_installed() {
 
-		return ( $this->db_tools->sql_column_exists( $this->table_prefix . 'users', 'user_verified' ) && $this->db_tools->sql_column_exists( $this->table_prefix . 'users', 'user_verify_visibility' ) );
+		return (
+			$this->db_tools->sql_column_exists( $this->table_prefix . 'users', 'user_verified' ) &&
+			$this->db_tools->sql_column_exists( $this->table_prefix . 'users', 'user_verify_visibility' ) &&
+			$this->db_tools->sql_column_exists( $this->table_prefix . 'groups', 'group_verified' )
+		);
 
 	}
 
@@ -38,13 +42,16 @@ class install extends \phpbb\db\migration\migration {
 				$this->table_prefix . 'users' => [
 					'user_verified' => [
 						'UINT:1', 0
-					]
-				],
-				$this->table_prefix . 'users' => [
+					],
 					'user_verify_visibility' => [
 						'UINT:1', 1
+					],
+				],
+				$this->table_prefix . 'groups' => [
+					'group_verified' => [
+						'UINT:1', 0
 					]
-				]
+				],
 			]
 		];
 
@@ -58,12 +65,28 @@ class install extends \phpbb\db\migration\migration {
 		return [
 			'drop_columns' => [
 				$this->table_prefix . 'users' => [
-					'user_verified'
-				],
-				$this->table_prefix . 'users' => [
+					'user_verified',
 					'user_verify_visibility'
-				]
+				],
+				$this->table_prefix . 'groups' => [
+					'group_verified'
+				],
 			]
+		];
+
+	}
+
+	/**
+	 * Add new permissions
+	 */
+	public function update_data() {
+
+		return [
+			[ 'permission.add', [ 'u_hide_verified_badge' ] ],
+			[ 'if', [
+				[ 'permission.role_exists', [ 'ROLE_USER_FULL' ] ],
+				[ 'permission.permission_set', [ 'ROLE_USER_FULL', 'u_hide_verified_badge' ] ],
+			] ],
 		];
 
 	}
