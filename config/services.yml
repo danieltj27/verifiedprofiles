@@ -4,6 +4,7 @@ services:
         arguments:
             - '@request'
             - '@template'
+            - '@language'
             - '@danieltj.verifiedprofiles.includes.functions'
         tags:
             - { name: event.listener }

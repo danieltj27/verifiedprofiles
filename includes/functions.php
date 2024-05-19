@@ -27,49 +27,31 @@ final class functions {
 	}
 
 	/**
-	 * Fetch a user's verification status.
+	 * Check the user's verification status.
 	 *
-	 * @param integer $user_id The id of the user to check.
-	 * @param bool    $is_id   Fallback flag to search by username instead of user ID.
+	 * @param integer $user_id The user ID to check against.
 	 *
-	 * @return boolean True or false values only.
+	 * @return boolean The verification status.
 	 */
-	public function is_user_verified( $user_id = 0, $is_id = true ) {
+	public function is_user_verified( $user_id = 0 ) {
 
-		if ( true === $is_id ) {
+		if ( 0 === $user_id ) {
 
-			/**
-			 * Force to an integer.
-			 */
-			$user_id = intval( $user_id );
-
-			$sql = 'SELECT user_verified FROM ' . USERS_TABLE . ' WHERE ' . $this->db->sql_build_array( 'SELECT', [
-				'user_id' => $user_id
-			] );
-
-		} else {
-
-			/**
-			 * Cast to string.
-			 */
-			$user_name = strval( $user_id );
-
-			$sql = 'SELECT user_verified FROM ' . USERS_TABLE . ' WHERE ' . $this->db->sql_build_array( 'SELECT', [
-				'username' => $user_name
-			] );
+			return false;
 
 		}
 
+		$user_id = intval( $user_id );
+
+		$sql = 'SELECT user_verified FROM ' . USERS_TABLE . ' WHERE ' . $this->db->sql_build_array( 'SELECT', [
+			'user_id' => $user_id
+		] );
+
 		$result = $this->db->sql_query( $sql );
-
-		$verified = $this->db->sql_fetchrow( $result );
-
+		$user = $this->db->sql_fetchrow( $result );
 		$this->db->sql_freeresult( $result );
 
-		/**
-		 * Does the user exist?
-		 */
-		if ( $verified && isset( $verified[ 'user_verified' ] ) && 1 == $verified[ 'user_verified' ] ) {
+		if ( ! empty( $user ) && '1' === $user[ 'user_verified' ] ) {
 
 			return true;
 

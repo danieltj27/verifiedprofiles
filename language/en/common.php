@@ -20,7 +20,7 @@ if ( empty( $lang ) || ! is_array( $lang ) ) {
 
 $lang = array_merge( $lang, [
 	'VERIFIED' => 'Verified',
-	'VERIFIED_TOOLTIP' => 'User is verified',
+	'VERIFIED_BADGE_TITLE' => 'Verified user',
 	'VERIFIED_LABEL' => 'Verification',
 	'VERIFIED_SETTING_YES' => 'Enable',
 	'VERIFIED_SETTING_NO' => 'Disable',

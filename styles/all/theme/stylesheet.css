@@ -2,7 +2,7 @@
  * css
  */
 
-.verifiedprofiles__verified {
+.vp-verified-badge {
 
 	background-color: transparent;
 	background-image: url( './images/verifiedprofiles/tick.svg' );
@@ -18,5 +18,17 @@
 	font-size: 0;
 
 	vertical-align: text-bottom;
+
+}
+
+a.header-avatar span:after {
+
+	display: none;
+
+}
+
+a.header-avatar span::last-of-type:after {
+
+	display: inline-block;
 
 }
