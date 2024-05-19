@@ -19,10 +19,14 @@ if ( empty( $lang ) || ! is_array( $lang ) ) {
 }
 
 $lang = array_merge( $lang, [
-	'VERIFIED' => 'Verified',
-	'VERIFIED_BADGE_TITLE' => 'Verified user',
-	'VERIFIED_LABEL' => 'Verification',
-	'VERIFIED_SETTING_YES' => 'Enable',
-	'VERIFIED_SETTING_NO' => 'Disable',
-	'VERIFIED_EXPLAIN' => 'Enable to display a verified badge next to the username.',
+	'VERIFIED'							=> 'Verified',
+	'VERIFIED_ARIA_LABEL'				=> 'This user is verified.',
+	'ACP_VERIFY_SETTING_LABEL'			=> 'Verification',
+	'ACP_VERIFY_SETTING_LABEL_EXPLAIN'	=> 'Enable to display a verified badge next to the username.',
+	'ACP_VERIFY_SETTING_ENABLE'			=> 'Enable',
+	'ACP_VERIFY_SETTING_DISABLE'		=> 'Disable',
+	'UCP_VERIFY_HIDE_BADGE'				=> 'Verified badge',
+	'UCP_VERIFY_HIDE_BADGE_EXPLAIN'		=> 'Choose whether or not you want to hide your verification badge from other users.',
+	'UCP_VERIFY_HIDE_OPTION_SHOW'		=> 'Show',
+	'UCP_VERIFY_HIDE_OPTION_HIDE'		=> 'Hide',
 ] );

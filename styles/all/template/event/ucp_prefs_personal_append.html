@@ -1,0 +1,7 @@
+<!-- IF S_USER_VERIFIED -->
+	<dl>
+		<dt><label for="user_verify_visibility">{L_UCP_VERIFY_HIDE_BADGE}{L_COLON}</label><br /><span>{L_UCP_VERIFY_HIDE_BADGE_EXPLAIN}</span></dt>
+		<dd><label><input type="radio" class="radio" name="user_verify_visibility" value="1" id="user_verify_visibility" <!-- IF not S_VERIFY_HIDE -->checked="checked"<!-- ENDIF -->/> {L_UCP_VERIFY_HIDE_OPTION_SHOW}</label>
+			<label><input type="radio" class="radio" name="user_verify_visibility" value="0" id="user_verify_visibility" <!-- IF S_VERIFY_HIDE -->checked="checked"<!-- ENDIF -->/> {L_UCP_VERIFY_HIDE_OPTION_HIDE}</label></dd>
+	</dl>
+<!-- ENDIF -->
