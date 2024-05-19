@@ -4,6 +4,12 @@
 
 Add a verification badge to user profiles on your forum.
 
+## Features
+
+1. Adds a badge next to usernames of verified users.
+2. Verified users can choose to show or hide their badge.
+3. Verify groups to automatically verify all group members.
+
 ## Install
 
 1. Add the contents of the extension into the `ext/danieltj/verifiedprofiles` directory.
