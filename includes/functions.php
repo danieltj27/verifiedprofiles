@@ -70,6 +70,8 @@ final class functions {
 	/**
 	 * Check if user has hidden their badge.
 	 * 
+	 * @todo check permission to hide badge
+	 * 
 	 * @param  integer $user_id The user ID to check against.
 	 * @return boolean          The badge visibility status (is or is not).
 	 */
