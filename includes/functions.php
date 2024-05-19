@@ -8,9 +8,15 @@
 
 namespace danieltj\verifiedprofiles\includes;
 
+use phpbb\auth\auth;
 use phpbb\db\driver\driver_interface as database;
 
 final class functions {
+
+	/**
+	 * @var auth
+	 */
+	protected $auth;
 
 	/**
 	 * @var driver_interface
@@ -20,8 +26,9 @@ final class functions {
 	/**
 	 * Constructor
 	 */
-	public function __construct( database $db ) {
+	public function __construct( auth $auth, database $db ) {
 
+		$this->auth = $auth;
 		$this->db = $db;
 
 	}
@@ -85,13 +92,23 @@ final class functions {
 
 		$user_id = intval( $user_id );
 
-		$sql = 'SELECT user_verify_visibility FROM ' . USERS_TABLE . ' WHERE ' . $this->db->sql_build_array( 'SELECT', [
+		$sql = 'SELECT * FROM ' . USERS_TABLE . ' WHERE ' . $this->db->sql_build_array( 'SELECT', [
 			'user_id' => $user_id
 		] );
 
 		$result = $this->db->sql_query( $sql );
 		$user = $this->db->sql_fetchrow( $result );
 		$this->db->sql_freeresult( $result );
+
+		// Check third-party user permissions
+		$user_auth = new auth();
+		$user_auth->acl( $user );
+
+		if ( ! $user_auth->acl_get( 'u_hide_verified_badge' ) ) {
+
+			return false;
+
+		}
 
 		if ( ! empty( $user ) && '1' === $user[ 'user_verify_visibility' ] ) {
 
