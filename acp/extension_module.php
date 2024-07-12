@@ -37,6 +37,12 @@ class extension_module {
 
 		add_form_key( 'verified_profile_settings' );
 
+		// The location of where the file will get stored.
+		$file_location = $phpbb_root_path . 'images';
+
+		// The file name of the custom badge (if one is uploaded).
+		$badge_file_name = $config[ 'custom_verified_profiles_badge' ];
+
 		if ( $request->is_set_post( 'submit' ) ) {
 
 			if ( ! check_form_key( 'verified_profile_settings' ) ) {
@@ -44,9 +50,6 @@ class extension_module {
 				trigger_error( 'FORM_INVALID' );
 			
 			}
-
-			// The location of where the file will get stored.
-			$file_location = $phpbb_root_path . 'images';
 
 			/**
 			 * Delete the existing custom verified badge before we
@@ -56,11 +59,11 @@ class extension_module {
 
 			if ( true === $delete_badge ) {
 
-				$badge_file_name = $config[ 'custom_verified_profiles_badge' ];
-
 				if ( '' !== $badge_file_name && file_exists( $file_location . '/' . $badge_file_name ) ) {
 
 					unlink( $file_location . '/' . $badge_file_name );
+
+					$config->set( 'custom_verified_profiles_badge', '' );
 
 				}
 
@@ -111,11 +114,12 @@ class extension_module {
 
 				if ( ! move_uploaded_file( $file_upload[ 'tmp_name' ], $file_location . '/' . $file_upload[ 'name' ] ) ) {
 
-					$config->set( 'custom_verified_profiles_badge', $file_upload[ 'name' ] );
-
 					trigger_error( $language->lang( 'ACP_VERIFICATION_SETTINGS_BAD_IMAGE_UPLOAD' ) . adm_back_link( $this->u_action ), E_USER_WARNING );
 
 				}
+
+				$config->set( 'custom_verified_profiles_badge', $file_upload[ 'name' ] );
+				$badge_file_name = $file_upload[ 'name' ];
 
 			}
 
@@ -123,8 +127,18 @@ class extension_module {
 
 		}
 
+		$custom_badge_url = false;
+
+		// Check if there is a custom badge uploaded.
+		if ( '' !== $badge_file_name && file_exists( $file_location . '/' . $badge_file_name ) ) {
+
+			$custom_badge_url = $file_location . '/' . $badge_file_name;
+
+		}
+
 		$template->assign_vars([
-			'U_ACTION' => $this->u_action,
+			'CUSTOM_BADGE_URL'	=> $custom_badge_url,
+			'U_ACTION'			=> $this->u_action
 		]);
 
 	}

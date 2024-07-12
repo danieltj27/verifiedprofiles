@@ -8,8 +8,10 @@
 			<dt><label for="custom_badge_upload">{{ lang( 'ACP_VERIFIED_CUSTOM_BADGE_LABEL' ) }}{{ lang( 'COLON' ) }}</label><br /><span>{{ lang( 'ACP_VERIFIED_CUSTOM_BADGE_EXPLAIN' ) }}</span></dt>
 			<dd>
 				<input type="file" class="file" name="custom_badge_upload" id="custom_badge_upload" />
-				<br />
-				<div><img src="#" /> <input type="checkbox" name="custom_badge_delete" id="custom_badge_delete" /> {{ lang( 'ACP_VERIFIED_CUSTOM_BADGE_DELETE' ) }}</div>
+				{% if CUSTOM_BADGE_URL %}
+					<br />
+					<div><img src="{CUSTOM_BADGE_URL}" /> <input type="checkbox" name="custom_badge_delete" id="custom_badge_delete" /> {{ lang( 'ACP_VERIFIED_CUSTOM_BADGE_DELETE' ) }}</div>
+				{% endif %}
 			</dd>
 		</dl>
 

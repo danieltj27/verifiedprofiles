@@ -98,6 +98,8 @@ class listener implements EventSubscriberInterface {
 	 */
 	public function update_username_string( $event ) {
 
+		$this->functions->has_custom_badge( true );
+
 		// Modes to ignore
 		$bad_modes = [
 			'colour', 'username', 'profile'
@@ -107,7 +109,16 @@ class listener implements EventSubscriberInterface {
 
 			if ( ! in_array( $event[ 'mode' ], $bad_modes, true ) ) {
 
-				$event[ 'username_string' ] .= ' <span class="vp-verified-badge" aria-label="' . $this->language->lang( 'VERIFIED_ARIA_LABEL' ) . '" title="' . $this->language->lang( 'VERIFIED' ) . '">' . $this->language->lang( 'VERIFIED' ) . '</span>';
+				$custom_badge = $this->functions->has_custom_badge( true );
+				$custom_badge_html = '';
+
+				if ( false !== $custom_badge ) {
+
+					$custom_badge_html = 'style="background-image: url(../images/' . $custom_badge . ');"';
+
+				}
+
+				$event[ 'username_string' ] .= ' <span class="vp-verified-badge" ' . $custom_badge_html . ' aria-label="' . $this->language->lang( 'VERIFIED_ARIA_LABEL' ) . '" title="' . $this->language->lang( 'VERIFIED' ) . '">' . $this->language->lang( 'VERIFIED' ) . '</span>';
 
 			}
 

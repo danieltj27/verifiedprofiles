@@ -216,4 +216,48 @@ final class functions {
 
 	}
 
+	/**
+	 * Check if a custom verification badge has been uploaded.
+	 * 
+	 * @param  boolean        $strict Check the database and file system for a custom badge or
+	 *                                just check the database for the file name. Setting this to
+	 *                                true is strongly advised.
+	 * @return boolean|string         Returns false if there isn't a custom badge uploaded or can return
+	 *                                a string is a custom badge has been uploaded.
+	 */
+	public function has_custom_badge( $strict = false ) {
+
+		global $phpbb_root_path;
+
+		// Create the default file location for custom badges.
+		$file_location = $phpbb_root_path . 'images';
+
+		$sql = 'SELECT * FROM ' . CONFIG_TABLE . ' WHERE ' . $this->db->sql_build_array( 'SELECT', [
+			'config_name' => 'custom_verified_profiles_badge'
+		] );
+
+		$result = $this->db->sql_query( $sql );
+		$config_data = $this->db->sql_fetchrow( $result );
+		$this->db->sql_freeresult( $result );
+
+		if ( empty( $config_data ) ) {
+
+			return false;
+
+		}
+
+		if ( true === $strict ) {
+
+			if ( '' === $config_data[ 'config_value' ] || ! file_exists( $file_location . '/' . $config_data[ 'config_value' ] ) ) {
+
+				return false;
+
+			}
+
+		}
+
+		return $config_data[ 'config_value' ];
+
+	}
+
 }
