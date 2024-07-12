@@ -51,7 +51,7 @@ class install extends \phpbb\db\migration\migration {
 					'group_verified' => [
 						'UINT:1', 0
 					]
-				],
+				]
 			]
 		];
 
@@ -70,7 +70,7 @@ class install extends \phpbb\db\migration\migration {
 				],
 				$this->table_prefix . 'groups' => [
 					'group_verified'
-				],
+				]
 			]
 		];
 
@@ -82,11 +82,16 @@ class install extends \phpbb\db\migration\migration {
 	public function update_data() {
 
 		return [
+			[ 'config.add', [ 'verified_profiles_custom_badge_path', '' ] ],
+
+			[ 'module.add', [ 'acp', 'ACP_CAT_DOT_MODS', 'ACP_VERIFIED_PROFILES' ], ],
+			[ 'module.add', [ 'acp', 'ACP_VERIFIED_PROFILES', [ 'module_basename' => '\danieltj\verifiedprofiles\acp\extension_module', 'modes' => [ 'settings' ] ] ] ],
+
 			[ 'permission.add', [ 'u_hide_verified_badge' ] ],
 			[ 'if', [
 				[ 'permission.role_exists', [ 'ROLE_USER_FULL' ] ],
 				[ 'permission.permission_set', [ 'ROLE_USER_FULL', 'u_hide_verified_badge' ] ],
-			] ],
+			] ]
 		];
 
 	}

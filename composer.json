@@ -2,7 +2,7 @@
     "name": "danieltj/verifiedprofiles",
     "type": "phpbb-extension",
     "description": "Add a verification badge to user profiles on your forum.",
-    "version": "2.1.0",
+    "version": "2.2.0",
     "license": "GPL-2.0-only",
     "authors": [
         {
@@ -18,7 +18,7 @@
     "extra": {
         "display-name": "Verified Profiles",
         "soft-require": {
-            "phpbb/phpbb": ">=3.3.11"
+            "phpbb/phpbb": ">=3.3.12"
         },
         "version-check": {
             "host": "www.phpbb.com",

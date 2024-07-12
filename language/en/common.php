@@ -21,6 +21,11 @@ if ( empty( $lang ) || ! is_array( $lang ) ) {
 $lang = array_merge( $lang, [
 	'VERIFIED'								=> 'Verified',
 	'VERIFIED_ARIA_LABEL'					=> 'This user is verified.',
+	'ACP_VERIFIED_PROFILES'					=> 'Verified Profiles',
+	'ACP_VERIFIED_PROFILE_SETTINGS'			=> 'Verification Settings',
+	'ACP_VERIFICATION_SETTINGS_SAVED'		=> 'Your changes have been saved.',
+	'ACP_VERIFIED_CUSTOM_BADGE_LABEL'		=> 'Custom badge',
+	'ACP_VERIFIED_CUSTOM_BADGE_EXPLAIN'		=> 'Upload your own verified badge to be displayed instead of the default green tick.',
 	'ACP_VERIFY_SETTING_LABEL'				=> 'Verification',
 	'ACP_VERIFY_SETTING_LABEL_EXPLAIN'		=> 'Enable to display a verified badge next to the username.',
 	'ACP_VERIFY_SETTING_ENABLE'				=> 'Enable',

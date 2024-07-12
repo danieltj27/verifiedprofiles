@@ -1,0 +1,22 @@
+{% INCLUDE 'overall_header.html' %}
+
+<h1>{{ lang( 'ACP_VERIFIED_PROFILE_SETTINGS' ) }}</h1>
+
+<form id="acp_board" method="post" action="{{ U_ACTION }}">
+    <fieldset>
+        <dl>
+            <dt><label for="verified_profiles_custom_badge">{{ lang( 'ACP_VERIFIED_CUSTOM_BADGE_LABEL' ) }}{{ lang( 'COLON' ) }}</label><br /><span>{{ lang( 'ACP_VERIFIED_CUSTOM_BADGE_EXPLAIN' ) }}</span></dt>
+            <dd>
+                <input type="file" class="file" name="verified_profiles_custom_badge" />
+            </dd>
+        </dl>
+
+        <p class="submit-buttons">
+            <input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" />
+        </p>
+
+        {{ S_FORM_TOKEN }}
+    </fieldset>
+</form>
+
+{% INCLUDE 'overall_footer.html' %}
