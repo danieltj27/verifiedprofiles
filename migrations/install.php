@@ -82,7 +82,7 @@ class install extends \phpbb\db\migration\migration {
 	public function update_data() {
 
 		return [
-			[ 'config.add', [ 'verified_profiles_custom_badge_path', '' ] ],
+			[ 'config.add', [ 'custom_verified_profiles_badge', '' ] ],
 
 			[ 'module.add', [ 'acp', 'ACP_CAT_DOT_MODS', 'ACP_VERIFIED_PROFILES' ], ],
 			[ 'module.add', [ 'acp', 'ACP_VERIFIED_PROFILES', [ 'module_basename' => '\danieltj\verifiedprofiles\acp\extension_module', 'modes' => [ 'settings' ] ] ] ],

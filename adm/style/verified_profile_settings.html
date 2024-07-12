@@ -2,21 +2,23 @@
 
 <h1>{{ lang( 'ACP_VERIFIED_PROFILE_SETTINGS' ) }}</h1>
 
-<form id="acp_board" method="post" action="{{ U_ACTION }}">
-    <fieldset>
-        <dl>
-            <dt><label for="verified_profiles_custom_badge">{{ lang( 'ACP_VERIFIED_CUSTOM_BADGE_LABEL' ) }}{{ lang( 'COLON' ) }}</label><br /><span>{{ lang( 'ACP_VERIFIED_CUSTOM_BADGE_EXPLAIN' ) }}</span></dt>
-            <dd>
-                <input type="file" class="file" name="verified_profiles_custom_badge" />
-            </dd>
-        </dl>
+<form action="{{ U_ACTION }}" method="post" id="verified-profiles-settings" enctype="multipart/form-data">
+	<fieldset>
+		<dl>
+			<dt><label for="custom_badge_upload">{{ lang( 'ACP_VERIFIED_CUSTOM_BADGE_LABEL' ) }}{{ lang( 'COLON' ) }}</label><br /><span>{{ lang( 'ACP_VERIFIED_CUSTOM_BADGE_EXPLAIN' ) }}</span></dt>
+			<dd>
+				<input type="file" class="file" name="custom_badge_upload" id="custom_badge_upload" />
+				<br />
+				<div><img src="#" /> <input type="checkbox" name="custom_badge_delete" id="custom_badge_delete" /> {{ lang( 'ACP_VERIFIED_CUSTOM_BADGE_DELETE' ) }}</div>
+			</dd>
+		</dl>
 
-        <p class="submit-buttons">
-            <input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" />
-        </p>
+		<p class="submit-buttons">
+			<input class="button1" type="submit" id="submit" name="submit" value="{{ lang('SUBMIT') }}" />
+		</p>
 
-        {{ S_FORM_TOKEN }}
-    </fieldset>
+		{{ S_FORM_TOKEN }}
+	</fieldset>
 </form>
 
 {% INCLUDE 'overall_footer.html' %}
