@@ -20,11 +20,11 @@ class initial_install extends \phpbb\db\migration\migration {
 	}
 
 	/**
-	 * Require at least 3.3.x version.
+	 * Require 3.3.0 or later.
 	 */
 	static public function depends_on() {
 
-		return [ '\phpbb\db\migration\data\v33x\v331rc1' ];
+		return [ '\phpbb\db\migration\data\v330\v330' ];
 
 	}
 

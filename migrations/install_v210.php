@@ -11,7 +11,7 @@ namespace danieltj\verifiedprofiles\migrations;
 class install_v210 extends \phpbb\db\migration\migration {
 
 	/**
-	 * Check extension is installed.
+	 * Check database changes have been made.
 	 */
 	public function effectively_installed() {
 
@@ -23,11 +23,11 @@ class install_v210 extends \phpbb\db\migration\migration {
 	}
 
 	/**
-	 * Require at least 3.3.x version.
+	 * Depends on install_install migration.
 	 */
 	static public function depends_on() {
 
-		return [ '\phpbb\db\migration\data\v33x\v331rc1' ];
+		return [ '\danieltj\verifiedprofiles\migrations\initial_install' ];
 
 	}
 
