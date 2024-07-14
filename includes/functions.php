@@ -48,17 +48,16 @@ final class functions {
 
 		}
 
-		$user_id = intval( $user_id );
-
 		$sql = 'SELECT user_verified FROM ' . USERS_TABLE . ' WHERE ' . $this->db->sql_build_array( 'SELECT', [
-			'user_id' => $user_id
+			'user_id' => $user_id,
+			'user_verified' => 1
 		] );
 
 		$result = $this->db->sql_query( $sql );
 		$user = $this->db->sql_fetchrow( $result );
 		$this->db->sql_freeresult( $result );
 
-		if ( ! empty( $user ) && '1' === $user[ 'user_verified' ] ) {
+		if ( ! empty( $user ) ) {
 
 			return true;
 
@@ -87,8 +86,6 @@ final class functions {
 			return true;
 
 		}
-
-		$user_id = intval( $user_id );
 
 		$sql = 'SELECT * FROM ' . USERS_TABLE . ' WHERE ' . $this->db->sql_build_array( 'SELECT', [
 			'user_id' => $user_id
@@ -132,17 +129,16 @@ final class functions {
 
 		}
 
-		$group_id = intval( $group_id );
-
 		$sql = 'SELECT group_verified FROM ' . GROUPS_TABLE . ' WHERE ' . $this->db->sql_build_array( 'SELECT', [
-			'group_id' => $group_id
+			'group_id' => $group_id,
+			'group_verified' => 1
 		] );
 
 		$result = $this->db->sql_query( $sql );
 		$group = $this->db->sql_fetchrow( $result );
 		$this->db->sql_freeresult( $result );
 
-		if ( ! empty( $group ) && '1' === $group[ 'group_verified' ] ) {
+		if ( ! empty( $group ) ) {
 
 			return true;
 

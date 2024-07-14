@@ -103,13 +103,9 @@ class listener implements EventSubscriberInterface {
 			'colour', 'username', 'profile'
 		];
 
-		if ( $this->functions->is_user_verified( $event[ 'user_id' ] ) && false === $this->functions->is_badge_hidden( $event[ 'user_id' ] ) ) {
+		if ( $this->functions->is_user_verified( $event[ 'user_id' ] ) && false === $this->functions->is_badge_hidden( $event[ 'user_id' ] ) && ! in_array( $event[ 'mode' ], $bad_modes, true ) ) {
 
-			if ( ! in_array( $event[ 'mode' ], $bad_modes, true ) ) {
-
-				$event[ 'username_string' ] .= ' <span class="vp-verified-badge" aria-label="' . $this->language->lang( 'VERIFIED_ARIA_LABEL' ) . '" title="' . $this->language->lang( 'VERIFIED' ) . '">' . $this->language->lang( 'VERIFIED' ) . '</span>';
-
-			}
+			$event[ 'username_string' ] .= ' <span class="vp-verified-badge" aria-label="' . $this->language->lang( 'VERIFIED_ARIA_LABEL' ) . '" title="' . $this->language->lang( 'VERIFIED' ) . '">' . $this->language->lang( 'VERIFIED' ) . '</span>';
 
 		}
 
@@ -197,7 +193,7 @@ class listener implements EventSubscriberInterface {
 	public function ucp_update_user_sql( $event ) {
 
 		$event[ 'sql_ary' ] = array_merge( $event[ 'sql_ary' ], [
-			'user_verify_visibility' => intval( $this->request->variable( 'user_verify_visibility', '1' ) ),
+			'user_verify_visibility' => $this->request->variable( 'user_verify_visibility', 1 ),
 		] );
 
 	}
