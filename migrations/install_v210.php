@@ -11,7 +11,7 @@ namespace danieltj\verifiedprofiles\migrations;
 class install_v210 extends \phpbb\db\migration\migration {
 
 	/**
-	 * Check database changes have been made.
+	 * Check installation status.
 	 */
 	public function effectively_installed() {
 
@@ -23,7 +23,7 @@ class install_v210 extends \phpbb\db\migration\migration {
 	}
 
 	/**
-	 * Depends on install_install migration.
+	 * Requires 1.0 migration.
 	 */
 	static public function depends_on() {
 
@@ -32,7 +32,7 @@ class install_v210 extends \phpbb\db\migration\migration {
 	}
 
 	/**
-	 * Run the 'up' function.
+	 * Install
 	 */
 	public function update_schema() {
 
@@ -54,7 +54,7 @@ class install_v210 extends \phpbb\db\migration\migration {
 	}
 
 	/**
-	 * Run the 'down' function.
+	 * Uninstall
 	 */
 	public function revert_schema() {
 
@@ -72,7 +72,7 @@ class install_v210 extends \phpbb\db\migration\migration {
 	}
 
 	/**
-	 * Update forum data.
+	 * Update stored data.
 	 */
 	public function update_data() {
 

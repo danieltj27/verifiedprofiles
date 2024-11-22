@@ -11,7 +11,7 @@ namespace danieltj\verifiedprofiles\migrations;
 class initial_install extends \phpbb\db\migration\migration {
 
 	/**
-	 * Check extension is installed.
+	 * Check installation status.
 	 */
 	public function effectively_installed() {
 
@@ -20,7 +20,7 @@ class initial_install extends \phpbb\db\migration\migration {
 	}
 
 	/**
-	 * Require 3.3.0 or later.
+	 * Requires phpBB 3.3 migration.
 	 */
 	static public function depends_on() {
 
@@ -29,7 +29,7 @@ class initial_install extends \phpbb\db\migration\migration {
 	}
 
 	/**
-	 * Run the 'up' function.
+	 * Install
 	 */
 	public function update_schema() {
 
@@ -46,7 +46,7 @@ class initial_install extends \phpbb\db\migration\migration {
 	}
 
 	/**
-	 * Run the 'down' function.
+	 * Uninstall
 	 */
 	public function revert_schema() {
 
