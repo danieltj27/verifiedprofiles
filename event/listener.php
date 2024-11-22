@@ -63,7 +63,7 @@ class listener implements EventSubscriberInterface {
 	}
 
 	/**
-	 * Register events
+	 * Register Events
 	 */
 	static public function getSubscribedEvents() {
 
@@ -83,7 +83,7 @@ class listener implements EventSubscriberInterface {
 	}
 
 	/**
-	 * Add languages
+	 * Add Languages
 	 */
 	public function add_languages( $event ) {
 
@@ -92,7 +92,7 @@ class listener implements EventSubscriberInterface {
 	}
 
 	/**
-	 * Add permissions
+	 * Add Permissions
 	 */
 	public function add_permissions( $event ) {
 
@@ -101,7 +101,7 @@ class listener implements EventSubscriberInterface {
 	}
 
 	/**
-	 * Add verified badge to verified usernames
+	 * includes/functions_content:get_username_string
 	 */
 	public function update_username_string( $event ) {
 
@@ -135,7 +135,7 @@ class listener implements EventSubscriberInterface {
 	}
 
 	/**
-	 * Add ACP template variables
+	 * includes/acp/acp_users:main
 	 */
 	public function acp_modify_profile( $event ) {
 
@@ -152,7 +152,7 @@ class listener implements EventSubscriberInterface {
 	}
 
 	/**
-	 * Add setting to SQL data
+	 * includes/acp/acp_users:main
 	 */
 	public function acp_user_sql_ary( $event ) {
 
@@ -163,7 +163,7 @@ class listener implements EventSubscriberInterface {
 	}
 
 	/**
-	 * Add group template variables
+	 * includes/acp/acp_groups:main
 	 */
 	public function add_group_verified_setting( $event ) {
 
@@ -174,7 +174,7 @@ class listener implements EventSubscriberInterface {
 	}
 
 	/**
-	 * Set verified setting
+	 * includes/acp/acp_groups:main
 	 */
 	public function initialise_group_verified_data( $event ) {
 
@@ -183,7 +183,7 @@ class listener implements EventSubscriberInterface {
 	}
 
 	/**
-	 * Save verified setting
+	 * includes/acp/acp_groups:main
 	 */
 	public function request_group_verified_data( $event ) {
 
@@ -192,7 +192,7 @@ class listener implements EventSubscriberInterface {
 	}
 
 	/**
-	 * Add UCP template variables
+	 * includes/ucp/ucp_prefs:main
 	 */
 	public function ucp_add_temp_vars( $event ) {
 
@@ -211,7 +211,7 @@ class listener implements EventSubscriberInterface {
 	}
 
 	/**
-	 * Update the user SQL data
+	 * includes/ucp/ucp_prefs:main
 	 */
 	public function ucp_update_user_sql( $event ) {
 
