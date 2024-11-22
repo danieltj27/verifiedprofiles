@@ -3,7 +3,7 @@
 /**
  * @package Verified Profiles
  * @copyright (c) 2024 Daniel James
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license https://opensource.org/license/gpl-2-0
  */
 
 namespace danieltj\verifiedprofiles\event;
@@ -12,6 +12,7 @@ use phpbb\auth\auth;
 use phpbb\request\request;
 use phpbb\template\template;
 use phpbb\language\language;
+use phpbb\user;
 use danieltj\verifiedprofiles\includes\functions;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -38,6 +39,11 @@ class listener implements EventSubscriberInterface {
 	protected $language;
 
 	/**
+	 * @var user
+	 */
+	protected $user;
+
+	/**
 	 * @var functions
 	 */
 	protected $functions;
@@ -45,12 +51,13 @@ class listener implements EventSubscriberInterface {
 	/**
 	 * Constructor
 	 */
-	public function __construct( auth $auth, request $request, template $template, language $language, functions $functions ) {
+	public function __construct( auth $auth, request $request, template $template, language $language, user $user, functions $functions ) {
 
 		$this->auth = $auth;
 		$this->request = $request;
 		$this->template = $template;
 		$this->language = $language;
+		$this->user = $user;
 		$this->functions = $functions;
 
 	}
@@ -80,7 +87,7 @@ class listener implements EventSubscriberInterface {
 	 */
 	public function add_languages( $event ) {
 
-		$this->language->add_lang( [ 'common', 'permissions' ], 'danieltj/verifiedprofiles' );
+		$this->language->add_lang( [ 'acp', 'common', 'permissions', 'ucp' ], 'danieltj/verifiedprofiles' );
 
 	}
 
@@ -98,14 +105,30 @@ class listener implements EventSubscriberInterface {
 	 */
 	public function update_username_string( $event ) {
 
+		$current_page = $this->user->page[ 'page_name' ];
+
 		// Modes to ignore
 		$bad_modes = [
 			'colour', 'username', 'profile'
 		];
 
-		if ( $this->functions->is_user_verified( $event[ 'user_id' ] ) && false === $this->functions->is_badge_hidden( $event[ 'user_id' ] ) && ! in_array( $event[ 'mode' ], $bad_modes, true ) ) {
+		// Check if the current page can show verification.
+		if ( $this->functions->is_location_enabled( $current_page ) ) {
 
-			$event[ 'username_string' ] .= ' <span class="vp-verified-badge" aria-label="' . $this->language->lang( 'VERIFIED_ARIA_LABEL' ) . '" title="' . $this->language->lang( 'VERIFIED' ) . '">' . $this->language->lang( 'VERIFIED' ) . '</span>';
+			if ( $this->functions->is_user_verified( $event[ 'user_id' ] ) && false === $this->functions->is_badge_hidden( $event[ 'user_id' ] ) && ! in_array( $event[ 'mode' ], $bad_modes, true ) ) {
+
+				$custom_badge = $this->functions->has_custom_badge( true );
+				$custom_badge_html = '';
+
+				if ( false !== $custom_badge ) {
+
+					$custom_badge_html = ' style="background-image: url(' . $custom_badge . ');"';
+
+				}
+
+				$event[ 'username_string' ] .= ' <span class="vp-verified-badge"' . $custom_badge_html . ' aria-label="' . $this->language->lang( 'VERIFIED_PROFILE_ARIA_LABEL' ) . '" title="' . $this->language->lang( 'VERIFIED_PROFILE_ARIA_LABEL' ) . '">' . $this->language->lang( 'VERIFIED_PROFILE' ) . '</span>';
+
+			}
 
 		}
 

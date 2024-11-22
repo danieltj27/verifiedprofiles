@@ -6,6 +6,7 @@ services:
             - '@request'
             - '@template'
             - '@language'
+            - '@user'
             - '@danieltj.verifiedprofiles.includes.functions'
         tags:
             - { name: event.listener }

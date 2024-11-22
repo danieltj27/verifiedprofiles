@@ -1,0 +1,38 @@
+{% INCLUDE 'overall_header.html' %}
+
+<h1>{{ lang( 'ACP_VERIFIED_PROFILES' ) }}</h1>
+
+<form action="{{ U_ACTION }}" method="post" id="verified-profiles-pro-settings" enctype="multipart/form-data">
+	<fieldset>
+		<legend>{{ lang( 'ACP_VERIFIED_PROFILES_MODULE_TITLE' ) }}</legend>
+		<dl>
+			<dt><label for="custom_badge_upload">{{ lang( 'ACP_SETTINGS_CUSTOM_IMAGE_LABEL' ) }}{{ lang( 'COLON' ) }}</label><br /><span>{{ lang( 'ACP_SETTINGS_CUSTOM_IMAGE_DESCRIPTION' ) }}</span></dt>
+			<dd>
+				<input type="file" class="file" name="custom_badge_upload" id="custom_badge_upload" />
+				{% if CUSTOM_BADGE_URL %}
+					<br />
+					<div><img src="{CUSTOM_BADGE_URL}" width="16" height="16" /> <input type="checkbox" name="custom_badge_delete" id="custom_badge_delete" /> {{ lang( 'ACP_SETTINGS_DELETE_CUSTOM_IMAGE_LABEL' ) }}</div>
+				{% endif %}
+			</dd>
+		</dl>
+
+		<dl>
+			<dt><label>{{ lang( 'ACP_SETTINGS_LOCATION_MANAGE_LABEL' ) }}{{ lang( 'COLON' ) }}</label><br /><span>{{ lang( 'ACP_SETTINGS_LOCATION_MANAGE_DESCRIPTION' ) }}</span></dt>
+			<dd>
+				{% for KEY,VALUE in LOCATIONS %}
+					<input type="checkbox" class="check" name="verify_location_{{ KEY }}" id="verify_location___{{ KEY }}" {{ ( true === VALUE.checked ) ? 'checked' : '' }} /> <label for="verify_location___{{ KEY }}">{{ lang( VALUE.language ) }}</label><br />
+				{% endfor %}
+			</dd>
+		</dl>
+	</fieldset>
+
+	<fieldset>
+		<p class="submit-buttons" style="margin: 0;">
+			<input class="button1" type="submit" id="submit" name="submit" value="{{ lang( 'SUBMIT' ) }}" />
+		</p>
+
+		{{ S_FORM_TOKEN }}
+	</fieldset>
+</form>
+
+{% INCLUDE 'overall_footer.html' %}

@@ -8,6 +8,10 @@ Add a verification badge to user profiles on your forum.
 2. Verified users can choose to show or hide their badge.
 3. Verify groups to automatically verify all group members.
 
+## Donate
+
+You can say thank you by sending a [donation via PayPal](https://www.paypal.com/paypalme/dtj27). Totally optional.
+
 ## Feedback
 
 Please submit all feedback as an [issue on GitHub](https://github.com/danieltj27/verifiedprofiles/issues). Pull requests are welcome.
@@ -21,4 +25,4 @@ Please submit all feedback as an [issue on GitHub](https://github.com/danieltj27
 
 ## Licence
 
-GPL v2
+[GPL v2](https://opensource.org/license/gpl-2-0)

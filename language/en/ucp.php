@@ -19,5 +19,9 @@ if ( empty( $lang ) || ! is_array( $lang ) ) {
 }
 
 $lang = array_merge( $lang, [
-	'ACL_U_HIDE_VERIFIED_BADGE' => 'Can hide verification badge'
+	'UCP_VERIFIED_PROFILE_VISIBILITY'			=> 'Verified badge',
+	'UCP_VERIFIED_PROFILE_VISIBILITY_EXPLAIN'	=> 'Choose whether or not you want to hide your verification badge from other users.',
+
+	'UCP_VERIFY_SETTING_SHOW'	=> 'Show',
+	'UCP_VERIFY_SETTING_HIDE'	=> 'Hide'
 ] );

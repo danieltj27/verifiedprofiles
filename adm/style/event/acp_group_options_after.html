@@ -1,5 +1,5 @@
 <dl>
-	<dt><label for="group_verified">{L_ACP_GROUP_VERIFIED_SETTING}{L_COLON}</label><br /><span>{L_ACP_GROUP_VERIFIED_SETTING_EXPLAIN}</span></dt>
-	<dd><label><input type="radio" class="radio" name="group_verified" value="1" id="group_verified_yes" <!-- IF S_GROUP_VERIFIED -->checked="checked"<!-- ENDIF -->/> {L_ACP_VERIFY_SETTING_ENABLE}</label>
-		<label><input type="radio" class="radio" name="group_verified" value="0" id="group_verified_no" <!-- IF not S_GROUP_VERIFIED -->checked="checked"<!-- ENDIF -->/> {L_ACP_VERIFY_SETTING_DISABLE}</label></dd>
+	<dt><label for="group_verified">{{ lang( 'ACP_GROUP_SETTING_LABEL' ) }}{{ lang( 'COLON' ) }}</label><br /><span>{{ lang( 'ACP_GROUP_SETTING_DESCRIPTION' ) }}</span></dt>
+	<dd><label><input type="radio" class="radio" name="group_verified" value="1" id="group_verified_yes" <!-- IF S_GROUP_VERIFIED -->checked="checked"<!-- ENDIF -->/> {{ lang( 'ACP_VERIFY_SETTING_ENABLE' ) }}</label>
+		<label><input type="radio" class="radio" name="group_verified" value="0" id="group_verified_no" <!-- IF not S_GROUP_VERIFIED -->checked="checked"<!-- ENDIF -->/> {{ lang( 'ACP_VERIFY_SETTING_DISABLE' ) }}</label></dd>
 </dl>
