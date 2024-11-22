@@ -3,7 +3,7 @@
     "type": "phpbb-extension",
     "description": "Add a verification badge to user profiles on your forum.",
     "version": "2.2.0",
-    "license": "GPL v2",
+    "license": "GPL-2.0-only",
     "authors": [
         {
             "name": "Daniel James",
