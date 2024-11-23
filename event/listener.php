@@ -196,9 +196,7 @@ class listener implements EventSubscriberInterface {
 	 */
 	public function ucp_add_temp_vars( $event ) {
 
-		global $user;
-
-		$user_id = $user->data[ 'user_id' ];
+		$user_id = $this->user->data[ 'user_id' ];
 
 		$verified = $this->functions->is_user_verified( $user_id );
 		$hidden = $this->functions->is_badge_hidden( $user_id );
