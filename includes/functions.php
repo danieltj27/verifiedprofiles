@@ -274,7 +274,7 @@ final class functions {
 		$config_data = $this->db->sql_fetchrow( $result );
 		$this->db->sql_freeresult( $result );
 
-		if ( empty( $config_data ) ) {
+		if ( empty( $config_data ) || ( isset( $config_data[ 'config_value' ] ) && '' === $config_data[ 'config_value' ] ) ) {
 
 			return false;
 
