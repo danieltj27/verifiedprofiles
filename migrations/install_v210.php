@@ -2,8 +2,8 @@
 
 /**
  * @package Verified Profiles
- * @copyright (c) 2023 Daniel James
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @copyright (c) 2024 Daniel James
+ * @license https://opensource.org/license/gpl-2-0
  */
 
 namespace danieltj\verifiedprofiles\migrations;
