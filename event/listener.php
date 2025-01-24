@@ -71,6 +71,7 @@ class listener implements EventSubscriberInterface {
 			'core.user_setup'						=> 'add_languages',
 			'core.permissions'						=> 'add_permissions',
 			'core.modify_username_string'			=> 'update_username_string',
+			'core.memberlist_prepare_profile_data'  => 'memberlist_prepare_profile_data',
 			'core.acp_users_modify_profile'			=> 'acp_modify_profile',
 			'core.acp_users_profile_modify_sql_ary'	=> 'acp_user_sql_ary',
 			'core.acp_manage_group_display_form'	=> 'add_group_verified_setting',
@@ -132,6 +133,23 @@ class listener implements EventSubscriberInterface {
 
 		}
 
+	}
+
+	/**
+	 * includes/functions_display: memberlist_prepare_profile_data
+	 */
+	public function memberlist_prepare_profile_data( $event ) {
+		$template_data = $event['template_data'];
+		$data = $event['data'];
+
+		$user_id = $data['user_id'];
+		$verified = $this->functions->is_user_verified( $user_id );
+		
+        if ($verified) {
+            $template_data['USERNAME'] .= ' <span class="vp-verified-badge" aria-label="' . $this->language->lang( 'VERIFIED_ARIA_LABEL' ) . '" title="' . $this->language->lang( 'VERIFIED' ) . '">' . $this->language->lang( 'VERIFIED' ) . '</span>';
+        }
+
+        $event['template_data'] = $template_data;
 	}
 
 	/**
