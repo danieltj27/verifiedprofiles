@@ -68,7 +68,7 @@ class listener implements EventSubscriberInterface {
 	static public function getSubscribedEvents() {
 
 		return [
-			'core.user_setup'						=> 'add_languages',
+			'core.user_setup_after'					=> 'add_languages',
 			'core.permissions'						=> 'add_permissions',
 			'core.modify_username_string'			=> 'update_username_string',
 			'core.acp_users_modify_profile'			=> 'acp_modify_profile',
