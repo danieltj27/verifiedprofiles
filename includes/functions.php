@@ -55,14 +55,14 @@ final class functions {
 
 		}
 
-		$sql = 'SELECT user_verified FROM ' . USERS_TABLE . ' WHERE ' . $this->db->sql_build_array( 'SELECT', [
+		$sql = 'SELECT user_verified FROM ' . USERS_TABLE . ' WHERE ' . $this->database->sql_build_array( 'SELECT', [
 			'user_id' => $user_id,
 			'user_verified' => 1
 		] );
 
-		$result = $this->db->sql_query( $sql );
-		$user = $this->db->sql_fetchrow( $result );
-		$this->db->sql_freeresult( $result );
+		$result = $this->database->sql_query( $sql );
+		$user = $this->database->sql_fetchrow( $result );
+		$this->database->sql_freeresult( $result );
 
 		if ( ! empty( $user ) ) {
 
@@ -94,13 +94,13 @@ final class functions {
 
 		}
 
-		$sql = 'SELECT * FROM ' . USERS_TABLE . ' WHERE ' . $this->db->sql_build_array( 'SELECT', [
+		$sql = 'SELECT * FROM ' . USERS_TABLE . ' WHERE ' . $this->database->sql_build_array( 'SELECT', [
 			'user_id' => $user_id
 		] );
 
-		$result = $this->db->sql_query( $sql );
-		$user = $this->db->sql_fetchrow( $result );
-		$this->db->sql_freeresult( $result );
+		$result = $this->database->sql_query( $sql );
+		$user = $this->database->sql_fetchrow( $result );
+		$this->database->sql_freeresult( $result );
 
 		// Check third-party user permissions
 		$user_auth = new auth();
@@ -136,14 +136,14 @@ final class functions {
 
 		}
 
-		$sql = 'SELECT group_verified FROM ' . GROUPS_TABLE . ' WHERE ' . $this->db->sql_build_array( 'SELECT', [
+		$sql = 'SELECT group_verified FROM ' . GROUPS_TABLE . ' WHERE ' . $this->database->sql_build_array( 'SELECT', [
 			'group_id' => $group_id,
 			'group_verified' => 1
 		] );
 
-		$result = $this->db->sql_query( $sql );
-		$group = $this->db->sql_fetchrow( $result );
-		$this->db->sql_freeresult( $result );
+		$result = $this->database->sql_query( $sql );
+		$group = $this->database->sql_fetchrow( $result );
+		$this->database->sql_freeresult( $result );
 
 		if ( ! empty( $group ) ) {
 
@@ -169,13 +169,13 @@ final class functions {
 
 		}
 
-		$sql = 'SELECT group_id FROM ' . USER_GROUP_TABLE . ' WHERE ' . $this->db->sql_build_array( 'SELECT', [
+		$sql = 'SELECT group_id FROM ' . USER_GROUP_TABLE . ' WHERE ' . $this->database->sql_build_array( 'SELECT', [
 			'user_id' => (int) $user_id
 		] );
 
-		$result = $this->db->sql_query( $sql );
-		$users_groups = $this->db->sql_fetchrowset( $result );
-		$this->db->sql_freeresult( $result );
+		$result = $this->database->sql_query( $sql );
+		$users_groups = $this->database->sql_fetchrowset( $result );
+		$this->database->sql_freeresult( $result );
 
 		if ( empty( $users_groups ) ) {
 
@@ -191,11 +191,11 @@ final class functions {
 
 		}
 
-		$sql = 'SELECT group_verified FROM ' . GROUPS_TABLE . ' WHERE ' . $this->db->sql_in_set( 'group_id', $group_ids );
+		$sql = 'SELECT group_verified FROM ' . GROUPS_TABLE . ' WHERE ' . $this->database->sql_in_set( 'group_id', $group_ids );
 
-		$result = $this->db->sql_query( $sql );
-		$groups = $this->db->sql_fetchrowset( $result );
-		$this->db->sql_freeresult( $result );
+		$result = $this->database->sql_query( $sql );
+		$groups = $this->database->sql_fetchrowset( $result );
+		$this->database->sql_freeresult( $result );
 
 		if ( empty( $groups ) ) {
 
@@ -233,23 +233,9 @@ final class functions {
 		// Create the default file location for custom badges.
 		$file_location = $phpbb_root_path . 'images';
 
-		$sql = 'SELECT * FROM ' . CONFIG_TABLE . ' WHERE ' . $this->db->sql_build_array( 'SELECT', [
-			'config_name' => 'verified_profiles_custom_badge'
-		] );
-
-		$result = $this->db->sql_query( $sql );
-		$config_data = $this->db->sql_fetchrow( $result );
-		$this->db->sql_freeresult( $result );
-
-		if ( empty( $config_data ) ) {
-
-			return false;
-
-		}
-
 		if ( true === $strict ) {
 
-			if ( '' === $config_data[ 'config_value' ] || ! file_exists( $file_location . '/' . $config_data[ 'config_value' ] ) ) {
+			if ( '' === $this->config[ 'verified_profiles_custom_badge' ] || ! file_exists( $file_location . '/' . $this->config[ 'verified_profiles_custom_badge' ] ) ) {
 
 				return false;
 
@@ -258,7 +244,7 @@ final class functions {
 		}
 
 		// Create a full path to the custom badge.
-		$badge_url = generate_board_url() . '/images/' . $config_data[ 'config_value' ];
+		$badge_url = generate_board_url() . '/images/' . $this->config[ 'verified_profiles_custom_badge' ];
 
 		return $badge_url;
 
@@ -273,22 +259,20 @@ final class functions {
 	 */
 	public function is_location_enabled( $current_page = '' ) {
 
-		$sql = 'SELECT * FROM ' . CONFIG_TABLE . ' WHERE ' . $this->db->sql_build_array( 'SELECT', [
-			'config_name' => 'verified_profiles_badge_locations'
-		] );
-
-		$result = $this->db->sql_query( $sql );
-		$config_data = $this->db->sql_fetchrow( $result );
-		$this->db->sql_freeresult( $result );
-
-		if ( empty( $config_data ) || ( isset( $config_data[ 'config_value' ] ) && '' === $config_data[ 'config_value' ] ) ) {
+		if ( '' === $this->config[ 'verified_profiles_badge_locations' ] ) {
 
 			return false;
 
 		}
 
 		// Convert from JSON into a php array.
-		$enabled_locations = json_decode( $config_data[ 'config_value' ] );
+		$enabled_locations = json_decode( $this->config[ 'verified_profiles_badge_locations' ] );
+
+		if ( NULL === $enabled_locations ) {
+
+			return false;
+
+		}
 
 		foreach ( $enabled_locations as $location ) {
 
