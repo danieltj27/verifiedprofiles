@@ -23,5 +23,5 @@ $lang = array_merge( $lang, [
 	'UCP_VERIFIED_PROFILE_VISIBILITY_DESCRIPTION'	=> 'Choose whether or not you want to hide your verification badge from other users.',
 
 	'UCP_VERIFY_SETTING_SHOW'	=> 'Show',
-	'UCP_VERIFY_SETTING_HIDE'	=> 'Hide'
+	'UCP_VERIFY_SETTING_HIDE'	=> 'Hide',
 ] );

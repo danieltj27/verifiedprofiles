@@ -43,16 +43,16 @@ $lang = array_merge( $lang, [
 	'ACP_SETTINGS_ERROR_BADGE_TYPE'						=> 'The image you uploaded has an invalid file type.',
 	'ACP_SETTINGS_ERROR_BADGE_UPLOAD'					=> 'The image you uploaded could not be saved on the server.',
 
-	'ACP_LOGS_SETTINGS_SAVED'		=> '<strong>Verified Profiles</strong>:<br />» Extension settings saved successfully.',
-	'ACP_LOGS_BADGE_SIZE_ERROR'		=> '<strong>Verified Profiles</strong>:<br />» [ERROR] Failed to upload custom image due to bad size.',
-	'ACP_LOGS_BADGE_TYPE_ERROR'		=> '<strong>Verified Profiles</strong>:<br />» [ERROR] Failed to upload custom image due to bad type.',
-	'ACP_LOGS_BADGE_UPLOAD_ERROR'	=> '<strong>Verified Profiles</strong>:<br />» [ERROR] Failed to upload custom image to the server.',
+	'ACP_LOGS_SETTINGS_SAVED'			=> '<strong>Verified Profiles</strong>:<br />» Extension settings saved successfully.',
+	'ACP_LOGS_BADGE_SIZE_ERROR'			=> '<strong>Verified Profiles</strong>:<br />» [ERROR] Failed to upload custom image due to bad size.',
+	'ACP_LOGS_BADGE_TYPE_ERROR'			=> '<strong>Verified Profiles</strong>:<br />» [ERROR] Failed to upload custom image due to bad type.',
+	'ACP_LOGS_BADGE_UPLOAD_ERROR'		=> '<strong>Verified Profiles</strong>:<br />» [ERROR] Failed to upload custom image to the server.',
 
 	'ACP_USER_SETTING_LABEL'			=> 'Verified Profile',
 	'ACP_USER_SETTING_DESCRIPTION'		=> 'Select <code>ENABLE</code> to display a verified badge next to their username.',
 	'ACP_GROUP_SETTING_LABEL'			=> 'Verified Group',
 	'ACP_GROUP_SETTING_DESCRIPTION'		=> 'Select <code>ENABLE</code> to display a verified badge next to all group member\'s usernames.',
 
-	'ACP_VERIFY_SETTING_ENABLE'		=> 'Enable',
-	'ACP_VERIFY_SETTING_DISABLE'	=> 'Disable'
+	'ACP_VERIFY_SETTING_ENABLE'			=> 'Enable',
+	'ACP_VERIFY_SETTING_DISABLE'		=> 'Disable',
 ] );
