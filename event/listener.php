@@ -78,6 +78,7 @@ class listener implements EventSubscriberInterface {
 			'core.acp_manage_group_request_data'	=> 'request_group_verified_data',
 			'core.ucp_prefs_modify_common'			=> 'ucp_add_temp_vars',
 			'core.ucp_prefs_personal_update_data'	=> 'ucp_update_user_sql',
+			'core.memberlist_view_profile'			=> 'add_profile_template_vars',
 		];
 
 	}
@@ -105,15 +106,12 @@ class listener implements EventSubscriberInterface {
 	 */
 	public function update_username_string( $event ) {
 
-		$current_page = $this->user->page[ 'page_name' ];
-
-		// Modes to ignore
+		// Username modes to ignore.
 		$bad_modes = [
 			'colour', 'username', 'profile'
 		];
 
-		// Check if the current page can show verification.
-		if ( $this->functions->is_location_enabled( $current_page ) ) {
+		if ( $this->functions->is_location_enabled( $this->user->page[ 'page_name' ] ) ) {
 
 			if ( $this->functions->is_user_verified( $event[ 'user_id' ] ) && false === $this->functions->is_badge_hidden( $event[ 'user_id' ] ) && ! in_array( $event[ 'mode' ], $bad_modes, true ) ) {
 
@@ -216,6 +214,28 @@ class listener implements EventSubscriberInterface {
 		$event[ 'sql_ary' ] = array_merge( $event[ 'sql_ary' ], [
 			'user_verify_visibility' => $this->request->variable( 'user_verify_visibility', 1 ),
 		] );
+
+	}
+
+	/**
+	 * memberlist
+	 */
+	public function add_profile_template_vars( $event ) {
+
+		if ( $this->functions->is_location_enabled( $this->user->page[ 'page_name' ] ) ) {
+
+			if ( $this->functions->is_user_verified( $event[ 'member' ][ 'user_id' ] ) && false === $this->functions->is_badge_hidden( $event[ 'member' ][ 'user_id' ] ) ) {
+
+				$custom_badge = $this->functions->has_custom_badge( true );
+
+				$this->template->assign_vars( [
+		 			'S_USER_VERIFIED' => true,
+		 			'U_CUSTOM_BADGE' => ( false !== $custom_badge ) ? 'style="background-image: url(' . $custom_badge . ');"' : ''
+		 		] );
+
+			}
+
+		}
 
 	}
 

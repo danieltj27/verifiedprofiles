@@ -1,0 +1,5 @@
+{% if S_USER_VERIFIED %}
+	<span class="vp-verified-badge" {{ U_CUSTOM_BADGE }} aria-label="{{ lang( 'VERIFIED_PROFILE_ARIA_LABEL' ) }}" title="{{ lang( 'VERIFIED_PROFILE_ARIA_LABEL' ) }}">
+		{{ lang( 'VERIFIED_PROFILE' ) }}
+	</span>
+{% endif %}
