@@ -11,7 +11,7 @@ namespace danieltj\verifiedprofiles;
 class ext extends \phpbb\extension\base {
 
 	/**
-	 * Version Checker
+	 * Check the minimum required versions.
 	 */
 	public function is_enableable() {
 
