@@ -9,6 +9,7 @@
 namespace danieltj\verifiedprofiles\includes;
 
 use phpbb\auth\auth;
+use phpbb\config\config;
 use phpbb\db\driver\driver_interface as database;
 
 final class functions {
@@ -19,17 +20,23 @@ final class functions {
 	protected $auth;
 
 	/**
+	 * @var config
+	 */
+	protected $config;
+
+	/**
 	 * @var driver_interface
 	 */
-	protected $db;
+	protected $database;
 
 	/**
 	 * Constructor
 	 */
-	public function __construct( auth $auth, database $db ) {
+	public function __construct( auth $auth, config $config, database $database ) {
 
 		$this->auth = $auth;
-		$this->db = $db;
+		$this->config = $config;
+		$this->database = $database;
 
 	}
 
