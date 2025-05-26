@@ -88,21 +88,21 @@ final class functions {
 	 */
 	public function is_badge_hidden( $user_id = 0 ) {
 
-		if ( 0 === $user_id ) {
+		if ( 0 === (int) $user_id ) {
 
 			return true;
 
 		}
 
 		$sql = 'SELECT * FROM ' . USERS_TABLE . ' WHERE ' . $this->database->sql_build_array( 'SELECT', [
-			'user_id' => $user_id
+			'user_id' => (int) $user_id
 		] );
 
 		$result = $this->database->sql_query( $sql );
 		$user = $this->database->sql_fetchrow( $result );
 		$this->database->sql_freeresult( $result );
 
-		// Check third-party user permissions
+		// Create new auth object for specific user.
 		$user_auth = new auth();
 		$user_auth->acl( $user );
 
@@ -130,14 +130,14 @@ final class functions {
 	 */
 	public function is_group_verified( $group_id = 0 ) {
 
-		if ( 0 === $group_id ) {
+		if ( 0 === (int) $group_id ) {
 
 			return false;
 
 		}
 
 		$sql = 'SELECT group_verified FROM ' . GROUPS_TABLE . ' WHERE ' . $this->database->sql_build_array( 'SELECT', [
-			'group_id' => $group_id,
+			'group_id' => (int) $group_id,
 			'group_verified' => 1
 		] );
 
@@ -187,7 +187,7 @@ final class functions {
 
 		foreach ( $users_groups as $group ) {
 
-			$group_ids[] = $group[ 'group_id' ];
+			$group_ids[] = (int) $group[ 'group_id' ];
 
 		}
 
