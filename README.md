@@ -12,7 +12,7 @@ Add a verification badge to user profiles on your forum.
 
 ## Donate
 
-You can say thank you by sending a [donation via PayPal](https://www.paypal.com/paypalme/dtj27). Totally optional.
+Like the extension? [Send a donation](https://www.paypal.com/paypalme/dtj27) through PayPal to say thank you.
 
 ## Feedback
 
@@ -20,10 +20,10 @@ Please submit all feedback as an [issue on GitHub](https://github.com/danieltj27
 
 ## Install
 
-1. Add the extension files into the `ext/danieltj/verifiedprofiles` directory.
+1. Upload the extension files into the `ext/danieltj/verifiedprofiles` directory.
 2. Log in to the Admin Control Panel and install the extension.
-3. Visit the *Manage Users* or *Manage Groups* page inside the Admin Control Panel and enable the verified badge for the selected user/group.
-4. Visit the extension settings page under the *Extensions* tab and select all of the pages where you would like the badge to be displayed.
+3. Visit the settings page within the Admin Control Panel under the *Extensions* tab and select all of the pages where you would like the badge to be displayed.
+4. Visit the *Manage Users* or *Manage Groups* page inside the Admin Control Panel and enable the verified badge for the selected user or group.
 
 ## Licence
 
