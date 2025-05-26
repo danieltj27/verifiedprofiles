@@ -22,8 +22,8 @@ Please submit all feedback as an [issue on GitHub](https://github.com/danieltj27
 
 1. Add the extension files into the `ext/danieltj/verifiedprofiles` directory.
 2. Log in to the Admin Control Panel and install the extension.
-3. Inside the ACP, edit a user and under *Profile* enable verification or;
-4. Edit the settings of a group and enable verficaition for the group.
+3. Visit the *Manage Users* or *Manage Groups* page inside the Admin Control Panel and enable the verified badge for the selected user/group.
+4. Visit the extension settings page under the *Extensions* tab and select all of the pages where you would like the badge to be displayed.
 
 ## Licence
 
