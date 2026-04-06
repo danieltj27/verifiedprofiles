@@ -14,6 +14,5 @@ services:
     danieltj.verifiedprofiles.includes.functions:
         class: danieltj\verifiedprofiles\includes\functions
         arguments:
-            - '@auth'
             - '@config'
             - '@dbal.conn'
