@@ -2,7 +2,7 @@
 
 /**
  * @package Verified Profiles
- * @copyright (c) 2025 Daniel James
+ * @copyright (c) 2026 Daniel James
  * @license https://opensource.org/license/gpl-2-0
  */
 
