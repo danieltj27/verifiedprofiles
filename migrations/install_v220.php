@@ -11,7 +11,7 @@ namespace danieltj\verifiedprofiles\migrations;
 class install_v220 extends \phpbb\db\migration\migration {
 
 	/**
-	 * Requires 2.1 migration.
+	 * Requires the 2.1 migration.
 	 */
 	static public function depends_on() {
 
@@ -20,7 +20,7 @@ class install_v220 extends \phpbb\db\migration\migration {
 	}
 
 	/**
-	 * Update stored data.
+	 * Update database
 	 */
 	public function update_data() {
 

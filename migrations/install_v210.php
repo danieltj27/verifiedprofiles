@@ -23,7 +23,7 @@ class install_v210 extends \phpbb\db\migration\migration {
 	}
 
 	/**
-	 * Requires 1.0 migration.
+	 * Requires initial install migration.
 	 */
 	static public function depends_on() {
 
@@ -72,7 +72,7 @@ class install_v210 extends \phpbb\db\migration\migration {
 	}
 
 	/**
-	 * Update stored data.
+	 * Update database
 	 */
 	public function update_data() {
 

@@ -17,9 +17,9 @@ class settings_info {
 			'title'		=> 'ACP_VERIFIED_PROFILES',
 			'modes'		=> [
 				'settings'	=> [
-					'title'	=> 'ACP_VERIFIED_PROFILES_MODULE_TITLE',
+					'title'	=> 'ACP_VERIFIED_PROFILES',
 					'auth'	=> 'ext_danieltj/verifiedprofiles && acl_a_board',
-					'cat'	=> [ 'ACP_VERIFIED_PROFILES' ],
+					'cat'	=> [ 'ACP_CAT_USERS' ],
 				],
 			],
 		];

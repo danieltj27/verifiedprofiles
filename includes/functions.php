@@ -66,6 +66,43 @@ final class functions {
 	}
 
 	/**
+	 * Verify a collection of users.
+	 * 
+	 * @param array|integer $user_ids An array containing the user IDs to verify.
+	 * 
+	 * @return boolean  True if successful or false if not.
+	 */
+	public function verify_users( $user_ids = [] ) {
+
+		// Don't accept an array or a single integer.
+		if ( ( ! is_array( $user_ids ) && ! is_int( $user_ids ) ) || ( is_array( $user_ids ) && empty( $user_ids ) ) ) {
+
+			return false;
+
+		}
+
+		// Convert to array for query later.
+		if ( is_int( $user_ids ) ) {
+
+			$user_ids[] = $user_ids;
+
+		}
+
+		$this->database->sql_query( 'UPDATE ' . USERS_TABLE . ' SET ' . $this->database->sql_build_array( 'UPDATE', [
+			'user_verified' => 1,
+		] ) . ' WHERE ' . $this->database->sql_in_set( 'user_id', $user_ids ) );
+
+		if ( false === $this->database->sql_affectedrows() ) {
+
+			return false;
+
+		}
+
+		return true;
+
+	}
+
+	/**
 	 * Returns whether a group auto verifies it's members.
 	 * 
 	 * @param  integer $group_id The group ID to check for verification.
@@ -108,10 +145,12 @@ final class functions {
 
 		$user_id = (int) $user_id;
 
+		// Return everything (*) because of the auth check further below.
 		$result = $this->database->sql_query( 'SELECT * FROM ' . USERS_TABLE . ' WHERE ' .
 			$this->database->sql_build_array( 'SELECT', [
-				'user_id'		=> $user_id,
-				'user_verified'	=> 1,
+				'user_id'					=> $user_id,
+				'user_verified'				=> 1,
+				'user_verify_visibility'	=> 0, // 0 means hide the badge.
 			]
 		) );
 
@@ -129,12 +168,6 @@ final class functions {
 		$new_auth->acl( $user );
 
 		if ( ! $new_auth->acl_get( 'u_hide_verified_badge' ) ) {
-
-			return false;
-
-		}
-
-		if ( 1 !== (int) $user[ 'user_verify_visibility' ] ) {
 
 			return false;
 
@@ -173,46 +206,6 @@ final class functions {
 		$badge_url = generate_board_url() . '/images/' . $this->config[ 'verified_profiles_custom_badge' ];
 
 		return $badge_url;
-
-	}
-
-	/**
-	 * Returns whether a verification badge is enabled for this page.
-	 * 
-	 * @param string $page The page to check if badges are enabled.
-	 * 
-	 * @return boolean  True if enabled or false if not.
-	 */
-	public function is_location_enabled( $current_page = '' ) {
-
-		if ( '' === $this->config[ 'verified_profiles_badge_locations' ] ) {
-
-			return false;
-
-		}
-
-		// Convert from JSON into a php array.
-		$enabled_locations = json_decode( $this->config[ 'verified_profiles_badge_locations' ] );
-
-		if ( NULL === $enabled_locations ) {
-
-			return false;
-
-		}
-
-		foreach ( $enabled_locations as $location ) {
-
-			$location_file_name = $location . '.php';
-
-			if ( false !== strpos( $current_page, $location_file_name ) ) {
-
-				return true;
-
-			}
-
-		}
-
-		return false;
 
 	}
 

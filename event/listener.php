@@ -76,6 +76,7 @@ class listener implements EventSubscriberInterface {
 			'core.acp_manage_group_display_form'	=> 'add_group_verified_setting',
 			'core.acp_manage_group_initialise_data'	=> 'initialise_group_verified_data',
 			'core.acp_manage_group_request_data'	=> 'request_group_verified_data',
+			'core.group_add_user_after'				=> 'verify_group_member',
 			'core.ucp_prefs_modify_common'			=> 'ucp_add_temp_vars',
 			'core.ucp_prefs_personal_update_data'	=> 'ucp_update_user_sql',
 			'core.memberlist_view_profile'			=> 'add_profile_template_vars',
@@ -88,7 +89,9 @@ class listener implements EventSubscriberInterface {
 	 */
 	public function add_languages( $event ) {
 
-		$this->language->add_lang( [ 'acp', 'common', 'permissions', 'ucp' ], 'danieltj/verifiedprofiles' );
+		$this->language->add_lang( [
+			'acp', 'common', 'permissions', 'ucp'
+		], 'danieltj/verifiedprofiles' );
 
 	}
 
@@ -97,7 +100,10 @@ class listener implements EventSubscriberInterface {
 	 */
 	public function add_permissions( $event ) {
 
-		$event->update_subarray( 'permissions', 'u_hide_verified_badge', [ 'lang' => 'ACL_U_HIDE_VERIFIED_BADGE', 'cat' => 'profile' ] );
+		$event->update_subarray( 'permissions', 'u_hide_verified_badge', [
+			'lang' => 'ACL_U_HIDE_VERIFIED_BADGE',
+			'cat' => 'profile'
+		] );
 
 	}
 
@@ -106,27 +112,24 @@ class listener implements EventSubscriberInterface {
 	 */
 	public function update_username_string( $event ) {
 
-		// Username modes to ignore.
-		$bad_modes = [
-			'colour', 'username', 'profile'
-		];
+		$user_id = (int) $event[ 'user_id' ];
 
-		if ( $this->functions->is_location_enabled( $this->user->page[ 'page_name' ] ) ) {
+		if (
+			$this->functions->is_user_verified( $user_id ) &&
+			false === $this->functions->is_badge_hidden( $user_id ) &&
+			! in_array( $event[ 'mode' ], [ 'colour', 'username', 'profile' ], true )
+		) {
 
-			if ( $this->functions->is_user_verified( $event[ 'user_id' ] ) && false === $this->functions->is_badge_hidden( $event[ 'user_id' ] ) && ! in_array( $event[ 'mode' ], $bad_modes, true ) ) {
+			$custom_badge = $this->functions->has_custom_badge();
+			$custom_badge_html = '';
 
-				$custom_badge = $this->functions->has_custom_badge( true );
-				$custom_badge_html = '';
+			if ( false !== $custom_badge ) {
 
-				if ( false !== $custom_badge ) {
-
-					$custom_badge_html = ' style="background-image: url(' . $custom_badge . ');"';
-
-				}
-
-				$event[ 'username_string' ] .= ' <span class="vp-verified-badge"' . $custom_badge_html . ' aria-label="' . $this->language->lang( 'VERIFIED_PROFILE_ARIA_LABEL' ) . '" title="' . $this->language->lang( 'VERIFIED_PROFILE_ARIA_LABEL' ) . '">' . $this->language->lang( 'VERIFIED_PROFILE' ) . '</span>';
+				$custom_badge_html = ' style="background-image: url(' . $custom_badge . ');"';
 
 			}
+
+			$event[ 'username_string' ] .= ' <span class="vp-verified-badge"' . $custom_badge_html . ' aria-label="' . $this->language->lang( 'VERIFIED_PROFILE_ARIA_LABEL' ) . '" title="' . $this->language->lang( 'VERIFIED_PROFILE_ARIA_LABEL' ) . '">' . $this->language->lang( 'VERIFIED_PROFILE' ) . '</span>';
 
 		}
 
@@ -190,6 +193,19 @@ class listener implements EventSubscriberInterface {
 	}
 
 	/**
+	 * includes/functions_user:group_user_add
+	 */
+	public function verify_group_member( $event ) {
+
+		if ( $this->functions->is_group_verified( $event[ 'group_id' ] ) ) {
+
+			$this->functions->verify_users( $event[ 'user_id_ary' ] );
+
+		}
+
+	}
+
+	/**
 	 * includes/ucp/ucp_prefs:main
 	 */
 	public function ucp_add_temp_vars( $event ) {
@@ -226,7 +242,7 @@ class listener implements EventSubscriberInterface {
 
 			if ( $this->functions->is_user_verified( $event[ 'member' ][ 'user_id' ] ) && false === $this->functions->is_badge_hidden( $event[ 'member' ][ 'user_id' ] ) ) {
 
-				$custom_badge = $this->functions->has_custom_badge( true );
+				$custom_badge = $this->functions->has_custom_badge();
 
 				$this->template->assign_vars( [
 		 			'S_USER_VERIFIED' => true,
