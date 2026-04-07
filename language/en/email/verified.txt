@@ -1,0 +1,10 @@
+Subject: Verification complete!
+
+Hello {USERNAME},
+
+Your profile has been verified. A badge will be displayed next to your username.
+
+Manage your notification settings in the User Control Panel:
+{U_NOTIFICATION_SETTINGS}
+
+{EMAIL_SIG}

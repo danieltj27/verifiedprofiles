@@ -3,9 +3,11 @@ services:
         class: danieltj\verifiedprofiles\event\listener
         arguments:
             - '@auth'
+            - '@dbal.conn'
+            - '@language'
+            - '@notification_manager'
             - '@request'
             - '@template'
-            - '@language'
             - '@user'
             - '@danieltj.verifiedprofiles.includes.functions'
         tags:
@@ -16,3 +18,12 @@ services:
         arguments:
             - '@config'
             - '@dbal.conn'
+
+    danieltj.verifiedprofiles.notification.type.verified:
+        class: danieltj\verifiedprofiles\notification\type\verified
+        parent: notification.type.base
+        shared: false
+        tags: [ { name: notification.type } ]
+        calls:
+            - [ 'set_user_loader', [ '@user_loader' ] ]
+            - [ 'set_functions', [ '@danieltj.verifiedprofiles.includes.functions' ] ]

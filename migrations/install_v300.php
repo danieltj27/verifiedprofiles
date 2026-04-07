@@ -25,6 +25,8 @@ class install_v300 extends \phpbb\db\migration\migration {
 	public function update_data() {
 
 		return [
+			[ 'config.add', [ 'verified_profiles_notify_item_id', '0' ] ],
+
 			[ 'config.remove', [ 'verified_profiles_badge_locations' ] ],
 			
 			[ 'module.remove', [ 'acp', 'ACP_VERIFIED_PROFILES', [

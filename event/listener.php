@@ -9,9 +9,11 @@
 namespace danieltj\verifiedprofiles\event;
 
 use phpbb\auth\auth;
+use phpbb\db\driver\driver_interface as database;
+use phpbb\language\language;
+use phpbb\notification\manager as notifications;
 use phpbb\request\request;
 use phpbb\template\template;
-use phpbb\language\language;
 use phpbb\user;
 use danieltj\verifiedprofiles\includes\functions;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -24,6 +26,21 @@ class listener implements EventSubscriberInterface {
 	protected $auth;
 
 	/**
+	 * @var database
+	 */
+	protected $database;
+
+	/**
+	 * @var language
+	 */
+	protected $language;
+
+	/**
+	 * @var notifications
+	 */
+	protected $notifications;
+
+	/**
 	 * @var request
 	 */
 	protected $request;
@@ -32,11 +49,6 @@ class listener implements EventSubscriberInterface {
 	 * @var template
 	 */
 	protected $template;
-
-	/**
-	 * @var language
-	 */
-	protected $language;
 
 	/**
 	 * @var user
@@ -51,12 +63,14 @@ class listener implements EventSubscriberInterface {
 	/**
 	 * Constructor
 	 */
-	public function __construct( auth $auth, request $request, template $template, language $language, user $user, functions $functions ) {
+	public function __construct( auth $auth, database $database, language $language, notifications $notifications, request $request, template $template, user $user, functions $functions ) {
 
 		$this->auth = $auth;
+		$this->database = $database;
+		$this->language = $language;
+		$this->notifications = $notifications;
 		$this->request = $request;
 		$this->template = $template;
-		$this->language = $language;
 		$this->user = $user;
 		$this->functions = $functions;
 
@@ -68,18 +82,18 @@ class listener implements EventSubscriberInterface {
 	static public function getSubscribedEvents() {
 
 		return [
-			'core.user_setup_after'					=> 'add_languages',
-			'core.permissions'						=> 'add_permissions',
-			'core.modify_username_string'			=> 'update_username_string',
-			'core.acp_users_modify_profile'			=> 'acp_modify_profile',
-			'core.acp_users_profile_modify_sql_ary'	=> 'acp_user_sql_ary',
-			'core.acp_manage_group_display_form'	=> 'add_group_verified_setting',
-			'core.acp_manage_group_initialise_data'	=> 'initialise_group_verified_data',
-			'core.acp_manage_group_request_data'	=> 'request_group_verified_data',
-			'core.group_add_user_after'				=> 'verify_group_member',
-			'core.ucp_prefs_modify_common'			=> 'ucp_add_temp_vars',
-			'core.ucp_prefs_personal_update_data'	=> 'ucp_update_user_sql',
-			'core.memberlist_view_profile'			=> 'add_profile_template_vars',
+			'core.user_setup_after'						=> 'add_languages',
+			'core.permissions'							=> 'add_permissions',
+			'core.modify_username_string'				=> 'update_username_string',
+			'core.acp_users_modify_profile'				=> 'acp_update_profile_data',
+			'core.acp_users_profile_modify_sql_ary'		=> 'acp_update_sql_data',
+			'core.acp_manage_group_display_form'		=> 'add_group_verified_setting',
+			'core.acp_manage_group_initialise_data'		=> 'initialise_group_verified_data',
+			'core.acp_manage_group_request_data'		=> 'request_group_verified_data',
+			'core.group_add_user_after'					=> 'verify_group_member',
+			'core.ucp_prefs_modify_common'				=> 'ucp_add_template_vars',
+			'core.ucp_prefs_personal_update_data'		=> 'ucp_update_user_sql',
+			'core.memberlist_view_profile'				=> 'add_profile_template_vars',
 		];
 
 	}
@@ -90,7 +104,7 @@ class listener implements EventSubscriberInterface {
 	public function add_languages( $event ) {
 
 		$this->language->add_lang( [
-			'acp', 'common', 'permissions', 'ucp'
+			'acp', 'common', 'notifications', 'permissions', 'ucp'
 		], 'danieltj/verifiedprofiles' );
 
 	}
@@ -138,7 +152,7 @@ class listener implements EventSubscriberInterface {
 	/**
 	 * includes/acp/acp_users:main
 	 */
-	public function acp_modify_profile( $event ) {
+	public function acp_update_profile_data( $event ) {
 
 		$verified = $this->request->variable( 'user_verified', (int) $event[ 'user_row' ][ 'user_verified' ] );
 
@@ -155,11 +169,23 @@ class listener implements EventSubscriberInterface {
 	/**
 	 * includes/acp/acp_users:main
 	 */
-	public function acp_user_sql_ary( $event ) {
+	public function acp_update_sql_data( $event ) {
+
+		$verified = ( 1 === (int) $event[ 'data' ][ 'user_verified' ] ) ? 1 : 0;
 
 		$event[ 'sql_ary' ] = array_merge( $event[ 'sql_ary' ], [
-			'user_verified' => $event[ 'data' ][ 'user_verified' ],
+			'user_verified' => $verified,
 		] );
+
+		if ( 1 === $verified ) {
+
+			// Send a new verified notification.
+			$this->notifications->add_notifications( 'danieltj.verifiedprofiles.notification.type.verified', [
+				'item_id'	=> $this->functions->create_notification_item_id(),
+				'user_id'	=> $event[ 'data' ][ 'user_id' ],
+			] );
+
+		}
 
 	}
 
@@ -197,9 +223,27 @@ class listener implements EventSubscriberInterface {
 	 */
 	public function verify_group_member( $event ) {
 
-		if ( $this->functions->is_group_verified( $event[ 'group_id' ] ) ) {
+		if ( $this->functions->is_group_verified( $event[ 'group_id' ] ) && 1 !== (int) $event[ 'pending' ] ) {
 
-			$this->functions->verify_users( $event[ 'user_id_ary' ] );
+			if ( is_array( $event[ 'user_id_ary' ] ) && ! empty( $event[ 'user_id_ary' ] ) ) {
+
+				foreach ( $event[ 'user_id_ary' ] as $user_id ) {
+
+					$this->database->sql_query( 'UPDATE ' . USERS_TABLE . ' SET ' . $this->database->sql_build_array( 'UPDATE', [
+						'user_verified'	=> 1,
+					] ) . ' WHERE ' . $this->database->sql_build_array( 'UPDATE', [
+						'user_id'		=> $user_id,
+					] ) );
+
+					// Trigger new 'verified' notification event.
+					$this->notifications->add_notifications( 'danieltj.verifiedprofiles.notification.type.verified', [
+						'item_id'	=> $this->functions->create_notification_item_id(),
+						'user_id'	=> $user_id,
+					] );
+
+				}
+
+			}
 
 		}
 
@@ -208,7 +252,7 @@ class listener implements EventSubscriberInterface {
 	/**
 	 * includes/ucp/ucp_prefs:main
 	 */
-	public function ucp_add_temp_vars( $event ) {
+	public function ucp_add_template_vars( $event ) {
 
 		$user_id = $this->user->data[ 'user_id' ];
 
@@ -238,18 +282,16 @@ class listener implements EventSubscriberInterface {
 	 */
 	public function add_profile_template_vars( $event ) {
 
-		if ( $this->functions->is_location_enabled( $this->user->page[ 'page_name' ] ) ) {
+		$user_id = (int) $event[ 'member' ][ 'user_id' ];
 
-			if ( $this->functions->is_user_verified( $event[ 'member' ][ 'user_id' ] ) && false === $this->functions->is_badge_hidden( $event[ 'member' ][ 'user_id' ] ) ) {
+		if ( $this->functions->is_user_verified( $user_id ) && false === $this->functions->is_badge_hidden( $user_id ) ) {
 
-				$custom_badge = $this->functions->has_custom_badge();
+			$custom_badge = $this->functions->has_custom_badge();
 
-				$this->template->assign_vars( [
-		 			'S_USER_VERIFIED' => true,
-		 			'U_CUSTOM_BADGE' => ( false !== $custom_badge ) ? 'style="background-image: url(' . $custom_badge . ');"' : ''
-		 		] );
-
-			}
+			$this->template->assign_vars( [
+	 			'S_USER_VERIFIED' => true,
+	 			'U_CUSTOM_BADGE' => ( false !== $custom_badge ) ? 'style="background-image: url(' . $custom_badge . ');"' : ''
+	 		] );
 
 		}
 

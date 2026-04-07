@@ -66,43 +66,6 @@ final class functions {
 	}
 
 	/**
-	 * Verify a collection of users.
-	 * 
-	 * @param array|integer $user_ids An array containing the user IDs to verify.
-	 * 
-	 * @return boolean  True if successful or false if not.
-	 */
-	public function verify_users( $user_ids = [] ) {
-
-		// Don't accept an array or a single integer.
-		if ( ( ! is_array( $user_ids ) && ! is_int( $user_ids ) ) || ( is_array( $user_ids ) && empty( $user_ids ) ) ) {
-
-			return false;
-
-		}
-
-		// Convert to array for query later.
-		if ( is_int( $user_ids ) ) {
-
-			$user_ids[] = $user_ids;
-
-		}
-
-		$this->database->sql_query( 'UPDATE ' . USERS_TABLE . ' SET ' . $this->database->sql_build_array( 'UPDATE', [
-			'user_verified' => 1,
-		] ) . ' WHERE ' . $this->database->sql_in_set( 'user_id', $user_ids ) );
-
-		if ( false === $this->database->sql_affectedrows() ) {
-
-			return false;
-
-		}
-
-		return true;
-
-	}
-
-	/**
 	 * Returns whether a group auto verifies it's members.
 	 * 
 	 * @param  integer $group_id The group ID to check for verification.
@@ -206,6 +169,23 @@ final class functions {
 		$badge_url = generate_board_url() . '/images/' . $this->config[ 'verified_profiles_custom_badge' ];
 
 		return $badge_url;
+
+	}
+
+	/**
+	 * Return a unique identifier for notifications.
+	 * 
+	 * @return integer  The integer for an notification item ID.
+	 */
+	public function create_notification_item_id() {
+
+		$item_id = (int) $this->config[ 'verified_profiles_notify_item_id' ];
+
+		$item_id += 1;
+
+		$this->config->set( 'verified_profiles_notify_item_id', $item_id );
+
+		return $item_id;
 
 	}
 
