@@ -19,6 +19,6 @@ if ( empty( $lang ) || ! is_array( $lang ) ) {
 }
 
 $lang = array_merge( $lang, [
-	'VERIFIED_PROFILE'				=> 'Verified',
-	'VERIFIED_PROFILE_ARIA_LABEL'	=> 'This user is verified.',
+	'VERIFIED_PROFILE'			=> 'Verified',
+	'VERIFIED_PROFILE_LABEL'	=> 'This user is verified.',
 ] );

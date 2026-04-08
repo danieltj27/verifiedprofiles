@@ -10,6 +10,7 @@ namespace danieltj\verifiedprofiles\event;
 
 use phpbb\auth\auth;
 use phpbb\db\driver\driver_interface as database;
+use phpbb\event\dispatcher_interface as dispatcher;
 use phpbb\language\language;
 use phpbb\notification\manager as notifications;
 use phpbb\request\request;
@@ -29,6 +30,11 @@ class listener implements EventSubscriberInterface {
 	 * @var database
 	 */
 	protected $database;
+
+	/**
+	 * @var dispatcher
+	 */
+	protected $dispatcher;
 
 	/**
 	 * @var language
@@ -63,10 +69,11 @@ class listener implements EventSubscriberInterface {
 	/**
 	 * Constructor
 	 */
-	public function __construct( auth $auth, database $database, language $language, notifications $notifications, request $request, template $template, user $user, functions $functions ) {
+	public function __construct( auth $auth, database $database, dispatcher $dispatcher, language $language, notifications $notifications, request $request, template $template, user $user, functions $functions ) {
 
 		$this->auth = $auth;
 		$this->database = $database;
+		$this->dispatcher = $dispatcher;
 		$this->language = $language;
 		$this->notifications = $notifications;
 		$this->request = $request;
@@ -109,6 +116,7 @@ class listener implements EventSubscriberInterface {
 
 		// Create new variable inside \phpbb\user object.
 		$this->user->_verified_cache = [];
+		$this->user->_verified_custom_badge = false;
 
 	}
 
@@ -152,21 +160,21 @@ class listener implements EventSubscriberInterface {
 		 * @var boolean $user_verified True if the user is verified, false if they are not
 		 *                             verified *or* they are hiding their badge.
 		 */
-		$event = [ 'user_id', 'user_verified' ];
-		extract( $this->dispatcher->trigger_event( 'danieltj.verifiedprofiles.modify_verified_user', compact( $event ) ) );
+		$vars = [ 'user_id', 'user_verified' ];
+		extract( $this->dispatcher->trigger_event( 'danieltj.verifiedprofiles.modify_verified_user', compact( $vars ) ) );
 
 		if ( $user_verified && ! in_array( $event[ 'mode' ], [ 'colour', 'username', 'profile' ], true ) ) {
 
-			$custom_badge = $this->functions->has_custom_badge();
+			$custom_badge_path = $this->functions->has_custom_badge();
 			$custom_badge_html = '';
 
-			if ( false !== $custom_badge ) {
+			if ( false !== $custom_badge_path ) {
 
-				$custom_badge_html = ' style="background-image: url(' . $custom_badge . ');"';
+				$custom_badge_html = ' style="background-image: url(' . $custom_badge_path . ');"';
 
 			}
 
-			$event[ 'username_string' ] .= ' <span class="vp-verified-badge"' . $custom_badge_html . ' aria-label="' . $this->language->lang( 'VERIFIED_PROFILE_ARIA_LABEL' ) . '" title="' . $this->language->lang( 'VERIFIED_PROFILE_ARIA_LABEL' ) . '">' . $this->language->lang( 'VERIFIED_PROFILE' ) . '</span>';
+			$event[ 'username_string' ] .= ' <span class="vp-verified-badge"' . $custom_badge_html . ' aria-label="' . $this->language->lang( 'VERIFIED_PROFILE_LABEL' ) . '" title="' . $this->language->lang( 'VERIFIED_PROFILE_LABEL' ) . '">' . $this->language->lang( 'VERIFIED_PROFILE' ) . '</span>';
 
 		}
 
