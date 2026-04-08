@@ -107,6 +107,9 @@ class listener implements EventSubscriberInterface {
 			'acp', 'common', 'notifications', 'permissions', 'ucp'
 		], 'danieltj/verifiedprofiles' );
 
+		// Create new variable inside \phpbb\user object.
+		$this->user->_verified_cache = [];
+
 	}
 
 	/**
@@ -127,12 +130,20 @@ class listener implements EventSubscriberInterface {
 	public function update_username_string( $event ) {
 
 		$user_id = (int) $event[ 'user_id' ];
+		$user_verified = false;
 
-		if (
-			$this->functions->is_user_verified( $user_id ) &&
-			false === $this->functions->is_badge_hidden( $user_id ) &&
-			! in_array( $event[ 'mode' ], [ 'colour', 'username', 'profile' ], true )
-		) {
+		if ( isset( $this->user->_verified_cache[ $event[ 'user_id' ] ] ) ) {
+
+			$user_verified = $this->user->_verified_cache[ $event[ 'user_id' ] ];
+
+		} else {
+
+
+			$user_verified = $this->user->_verified_cache[ $user_id ] = $this->functions->is_user_verified( $user_id );
+
+		}
+
+		if ( $user_verified && ! in_array( $event[ 'mode' ], [ 'colour', 'username', 'profile' ], true ) ) {
 
 			$custom_badge = $this->functions->has_custom_badge();
 			$custom_badge_html = '';
@@ -182,7 +193,7 @@ class listener implements EventSubscriberInterface {
 			// Send a new verified notification.
 			$this->notifications->add_notifications( 'danieltj.verifiedprofiles.notification.type.verified', [
 				'item_id'	=> $this->functions->create_notification_item_id(),
-				'user_id'	=> $event[ 'data' ][ 'user_id' ],
+				'user_id'	=> $event[ 'user_id' ],
 			] );
 
 		}
@@ -256,12 +267,9 @@ class listener implements EventSubscriberInterface {
 
 		$user_id = $this->user->data[ 'user_id' ];
 
-		$verified = $this->functions->is_user_verified( $user_id );
-		$hidden = $this->functions->is_badge_hidden( $user_id );
-
 		$this->template->assign_vars( [
- 			'S_USER_VERIFIED' => ( $verified && $this->auth->acl_get( 'u_hide_verified_badge' ) ),
- 			'S_VERIFY_HIDE' => $hidden,
+ 			'S_VERIFIED_USER'	=> ( 1 === (int) $this->user->data[ 'user_verified' ] && $this->auth->acl_get( 'u_hide_verified_badge' ) ) ? true : false,
+ 			'S_VERIFIED_HIDDEN'	=> ( 1 === (int) $this->user->data[ 'user_verify_visibility' ] ) ? true : false,
  		] );
 
 	}
@@ -282,18 +290,12 @@ class listener implements EventSubscriberInterface {
 	 */
 	public function add_profile_template_vars( $event ) {
 
-		$user_id = (int) $event[ 'member' ][ 'user_id' ];
+		$custom_badge = $this->functions->has_custom_badge();
 
-		if ( $this->functions->is_user_verified( $user_id ) && false === $this->functions->is_badge_hidden( $user_id ) ) {
-
-			$custom_badge = $this->functions->has_custom_badge();
-
-			$this->template->assign_vars( [
-	 			'S_USER_VERIFIED' => true,
-	 			'U_CUSTOM_BADGE' => ( false !== $custom_badge ) ? 'style="background-image: url(' . $custom_badge . ');"' : ''
-	 		] );
-
-		}
+		$this->template->assign_vars( [
+ 			'S_USER_VERIFIED' => $this->functions->is_user_verified( $event[ 'member' ][ 'user_id' ] ),
+ 			'U_CUSTOM_BADGE' => ( false !== $custom_badge ) ? 'style="background-image: url(' . $custom_badge . ');"' : ''
+ 		] );
 
 	}
 

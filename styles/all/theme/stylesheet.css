@@ -1,28 +1,21 @@
 /**
- * css
+ * verifiedprofiles/stylesheet
  */
 
 .vp-verified-badge {
-
 	background-color: transparent;
 	background-image: url( './images/verifiedprofiles/tick.svg' );
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: 14px;
-
 	width: 14px;
 	height: 14px;
 	margin: 0;
 	display: inline-block;
-
 	font-size: 0;
-
 	vertical-align: text-bottom;
-
 }
 
 a.header-avatar span.vp-verified-badge:after {
-
 	display: none;
-
 }

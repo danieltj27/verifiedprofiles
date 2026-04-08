@@ -36,20 +36,31 @@ final class functions {
 	/**
 	 * Returns whether the user is verified or not.
 	 *
-	 * @param  integer $user_id The user ID to check if they are verified.
+	 * @param integer $user_id    The user ID to check if they are verified.
+	 * @param boolean $hide_check (optional) A flag that determines whether the badge
+	 *                            visibility should be checked too. Defaults to true,
+	 *                            pass false to just check if they are verified.
 	 * 
 	 * @return boolean  True if user is verified, false if not.
 	 */
-	public function is_user_verified( $user_id ) {
+	public function is_user_verified( $user_id, $hide_check = true ) {
 
 		$user_id = (int) $user_id;
 
-		$result = $this->database->sql_query( 'SELECT user_verified FROM ' . USERS_TABLE . ' WHERE ' .
-			$this->database->sql_build_array( 'SELECT', [
-				'user_id'		=> $user_id,
-				'user_verified'	=> 1,
-			]
-		) );
+		$where = [
+			'user_id'		=> $user_id,
+			'user_verified'	=> 1,
+		];
+
+		if ( true === $hide_check ) {
+
+			$where[ 'user_verify_visibility' ] = 1;
+
+		}
+
+		$result = $this->database->sql_query(
+			'SELECT * FROM ' . USERS_TABLE . ' WHERE ' . $this->database->sql_build_array( 'SELECT', $where )
+		);
 
 		$user = $this->database->sql_fetchrow( $result );
 		
@@ -58,6 +69,19 @@ final class functions {
 		if ( false === $user ) {
 
 			return false;
+
+		}
+
+		if ( true === $hide_check ) {
+
+			$new_auth = new \phpbb\auth\auth();
+			$new_auth->acl( $user );
+
+			if ( ! $new_auth->acl_get( 'u_hide_verified_badge' ) ) {
+
+				return false;
+
+			}
 
 		}
 
@@ -88,49 +112,6 @@ final class functions {
 		$this->database->sql_freeresult( $result );
 
 		if ( false === $group ) {
-
-			return false;
-
-		}
-
-		return true;
-
-	}
-
-	/**
-	 * Returns whether a user has hidden their badge.
-	 * 
-	 * @param  integer $user_id The user ID to check their badge visibility.
-	 * 
-	 * @return boolean  True if the badge is hidden, false if not.
-	 */
-	public function is_badge_hidden( $user_id ) {
-
-		$user_id = (int) $user_id;
-
-		// Return everything (*) because of the auth check further below.
-		$result = $this->database->sql_query( 'SELECT * FROM ' . USERS_TABLE . ' WHERE ' .
-			$this->database->sql_build_array( 'SELECT', [
-				'user_id'					=> $user_id,
-				'user_verified'				=> 1,
-				'user_verify_visibility'	=> 0, // 0 means hide the badge.
-			]
-		) );
-
-		$user = $this->database->sql_fetchrow( $result );
-		
-		$this->database->sql_freeresult( $result );
-
-		if ( false === $user ) {
-
-			return false;
-
-		}
-
-		$new_auth = new \phpbb\auth\auth();
-		$new_auth->acl( $user );
-
-		if ( ! $new_auth->acl_get( 'u_hide_verified_badge' ) ) {
 
 			return false;
 

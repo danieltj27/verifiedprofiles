@@ -1,7 +1,7 @@
-{% if S_USER_VERIFIED %}
+{% if S_VERIFIED_USER %}
 	<dl>
 		<dt><label for="user_verify_visibility">{{ lang( 'UCP_VERIFICATION_VISIBILITY_LABEL' ) ~ lang( 'COLON' ) }}</label><br /><span>{{ lang( 'UCP_VERIFICATION_VISIBILITY_DESCRIPTION' ) }}</span></dt>
-		<dd><label><input type="radio" class="radio" name="user_verify_visibility" value="1" id="user_verify_visibility"{{ ( ! S_VERIFY_HIDE ) ? ' checked="checked"' : '' }}/> {{ lang( 'UCP_VERIFICATION_VISIBILITY_VALUE_SHOW' ) }}</label>
-			<label><input type="radio" class="radio" name="user_verify_visibility" value="0" id="user_verify_visibility"{{ ( S_VERIFY_HIDE ) ? ' checked="checked"' : '' }}/> {{ lang( 'UCP_VERIFICATION_VISIBILITY_VALUE_HIDE' ) }}</label></dd>
+		<dd><label><input type="radio" class="radio" name="user_verify_visibility" value="1" id="user_verify_visibility"{{ ( S_VERIFIED_HIDDEN ) ? ' checked="checked"' : '' }}/> {{ lang( 'UCP_VERIFICATION_VISIBILITY_VALUE_SHOW' ) }}</label>
+			<label><input type="radio" class="radio" name="user_verify_visibility" value="0" id="user_verify_visibility"{{ ( ! S_VERIFIED_HIDDEN ) ? ' checked="checked"' : '' }}/> {{ lang( 'UCP_VERIFICATION_VISIBILITY_VALUE_HIDE' ) }}</label></dd>
 	</dl>
 {% endif %}
