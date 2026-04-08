@@ -138,10 +138,22 @@ class listener implements EventSubscriberInterface {
 
 		} else {
 
-
 			$user_verified = $this->user->_verified_cache[ $user_id ] = $this->functions->is_user_verified( $user_id );
 
 		}
+
+		/**
+		 * Handle the user verification status before the badge is displayed.
+		 * 
+		 * @event danieltj.verifiedprofiles.modify_verified_user
+		 * @since 3.0.0-b3
+		 * 
+		 * @var integer $user_id       The user ID being checked for verification.
+		 * @var boolean $user_verified True if the user is verified, false if they are not
+		 *                             verified *or* they are hiding their badge.
+		 */
+		$event = [ 'user_id', 'user_verified' ];
+		extract( $this->dispatcher->trigger_event( 'danieltj.verifiedprofiles.modify_verified_user', compact( $event ) ) );
 
 		if ( $user_verified && ! in_array( $event[ 'mode' ], [ 'colour', 'username', 'profile' ], true ) ) {
 
