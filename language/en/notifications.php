@@ -19,7 +19,7 @@ if ( empty( $lang ) || ! is_array( $lang ) ) {
 }
 
 $lang = array_merge( $lang, [
-	'VERIFIED_PROFILES_NOTIFICATIONS_VERIFIED_TITLE'	=> '<strong>Profile Verification</strong>',
+	'VERIFIED_PROFILES_NOTIFICATIONS_VERIFIED_TITLE'	=> '<strong>Profile verified!</strong>',
 	'VERIFIED_PROFILES_NOTIFICATIONS_VERIFIED_REASON'	=> 'Your profile has been successfully verified.',
 
 	// UCP

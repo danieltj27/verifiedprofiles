@@ -12,7 +12,7 @@ Add a verification badge to user profiles on your forum.
 
 ## Donate
 
-Like the extension? [Send a donation](https://www.paypal.com/paypalme/dtj27) through PayPal to say thank you.
+Like this extension? [Donate](https://www.paypal.com/paypalme/dtj27) via PayPal to say thank you!
 
 ## Feedback
 

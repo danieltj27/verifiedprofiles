@@ -116,7 +116,6 @@ class listener implements EventSubscriberInterface {
 
 		// Create new variable inside \phpbb\user object.
 		$this->user->_verified_cache = [];
-		$this->user->_verified_custom_badge = false;
 
 	}
 
