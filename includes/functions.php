@@ -154,6 +154,24 @@ final class functions {
 	}
 
 	/**
+	 * Return whether users lose their badge if they change their
+	 * registration details (email & username).
+	 * 
+	 * @return bool  True if verification is required again, false if not.
+	 */
+	public function require_user_verify_after_update() {
+
+		if ( 1 === (int) $this->config[ 'verified_profiles_reg_update_verify_again' ] ) {
+
+			return true;
+
+		}
+
+		return false;
+
+	}
+
+	/**
 	 * Return a unique identifier for notifications.
 	 * 
 	 * @return integer  The integer for an notification item ID.

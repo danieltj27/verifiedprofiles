@@ -23,4 +23,6 @@ $lang = array_merge( $lang, [
 	'UCP_VERIFICATION_VISIBILITY_DESCRIPTION'	=> 'Choose whether or not you want to hide your verification badge from other users.',
 	'UCP_VERIFICATION_VISIBILITY_VALUE_SHOW'	=> 'Show',
 	'UCP_VERIFICATION_VISIBILITY_VALUE_HIDE'	=> 'Hide',
+
+	'UCP_VERIFICATION_UPDATE_REG_DETAILS_WARNING'	=> 'Updating your email address or username will remove your verification badge from your profile.',
 ] );

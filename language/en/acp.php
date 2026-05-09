@@ -31,6 +31,9 @@ $lang = array_merge( $lang, [
 	'ACP_CUSTOM_VERIFY_BADGE_DESCRIPTION'	=> 'Upload a custom image to replace the default verified icon. The recommended file type is <code>PNG</code>.',
 	'ACP_CUSTOM_VERIFY_BADGE_DELETE'		=> 'Delete existing image',
 
+	'ACP_REG_UPDATE_VERIFY_AGAIN_LABEL'			=> 'Reset verification after changes',
+	'ACP_REG_UPDATE_VERIFY_AGAIN_DESCRIPTION'	=> 'Select whether a user must be verified again if they change their email address or username.',
+
 	// CONFIRMATIONS
 	'ACP_VERIFICATION_SETTINGS_SAVED'		=> 'Verification settings saved successfully.',
 	'ACP_VERIFICATION_BADGE_ERROR_SIZE'		=> 'The image you uploaded has an invalid file size.',

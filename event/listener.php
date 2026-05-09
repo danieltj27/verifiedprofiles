@@ -100,6 +100,8 @@ class listener implements EventSubscriberInterface {
 			'core.group_add_user_after'					=> 'verify_group_member',
 			'core.ucp_prefs_modify_common'				=> 'ucp_add_template_vars',
 			'core.ucp_prefs_personal_update_data'		=> 'ucp_update_user_sql',
+			'core.ucp_profile_reg_details_data'			=> 'ucp_reg_details_add_tpl_vars',
+			'core.ucp_profile_reg_details_validate'		=> 'ucp_reg_details_verify_update',
 			'core.memberlist_view_profile'				=> 'add_profile_template_vars',
 		];
 
@@ -301,6 +303,42 @@ class listener implements EventSubscriberInterface {
 		$event[ 'sql_ary' ] = array_merge( $event[ 'sql_ary' ], [
 			'user_verify_visibility' => $this->request->variable( 'user_verify_visibility', 1 ),
 		] );
+
+	}
+
+	/**
+	 * includes/ucp/ucp_profile:main
+	 */
+	public function ucp_reg_details_add_tpl_vars( $event ) {
+
+		if ( $this->functions->is_user_verified( $this->user->data[ 'user_id' ] ) ) {
+
+			$this->template->assign_vars( [
+	 			'S_WARN_VERIFIED_CHANGES' => ( $this->functions->require_user_verify_after_update() ) ? true : false,
+	 		] );
+
+		}
+
+	}
+
+	/**
+	 * includes/ucp/ucp_profile:main
+	 */
+	public function ucp_reg_details_verify_update( $event ) {
+
+		if ( ! count( $event[ 'error' ] ) && $this->functions->require_user_verify_after_update() ) {
+
+			if ( ( $this->user->data[ 'user_email' ] !== $event[ 'data' ][ 'email' ] ) || ( $this->user->data[ 'username' ] !== $event[ 'data' ][ 'username' ] ) ) {
+
+				$this->database->sql_query( 'UPDATE ' . USERS_TABLE . ' SET ' . $this->database->sql_build_array( 'UPDATE', [
+					'user_verified'	=> 0,
+				] ) . ' WHERE ' . $this->database->sql_build_array( 'UPDATE', [
+					'user_id'		=> (int) $this->user->data[ 'user_id' ],
+				] ) );
+
+			}
+
+		}
 
 	}
 

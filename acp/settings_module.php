@@ -26,7 +26,7 @@ class settings_module {
 	public $page_title;
 
 	/**
-	 * Extension module
+	 * Module
 	 */
 	public function main( $id, $mode ) {
 
@@ -115,6 +115,9 @@ class settings_module {
 
 			}
 
+			// Update the require verification again option.
+			$config->set( 'verified_profiles_reg_update_verify_again', ( 1 === (int) $request->variable( 'reg_update_verify_again', '0' ) ) ? 1 : 0 );
+
 			$log->add( 'admin', $user->data[ 'user_id' ], $user->data[ 'user_ip' ], 'ACP_VERIFIED_PROFILES_LOG_SAVED', time(), [] );
 
 			trigger_error( $language->lang( 'ACP_VERIFICATION_SETTINGS_SAVED' ) . adm_back_link( $this->u_action ) );
@@ -131,8 +134,9 @@ class settings_module {
 		}
 
 		$template->assign_vars([
-			'CUSTOM_BADGE_URL'	=> $custom_badge_url,
-			'U_ACTION'			=> $this->u_action
+			'CUSTOM_BADGE_URL'			=> $custom_badge_url,
+			'S_REG_UPDATE_VERIFY_AGAIN'	=> ( 1 === (int) $config[ 'verified_profiles_reg_update_verify_again' ] ) ? true : false,
+			'U_ACTION'					=> $this->u_action
 		]);
 
 	}

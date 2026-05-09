@@ -4,9 +4,7 @@
 
 <form action="{{ U_ACTION }}" method="post" id="verified-profiles-pro-settings" enctype="multipart/form-data">
 	<fieldset>
-
 		<legend>{{ lang( 'ACP_VERIFIED_PROFILES_SETTINGS' ) }}</legend>
-		
 		<dl>
 			<dt><label for="verify_badge_upload">{{ lang( 'ACP_CUSTOM_VERIFY_BADGE_LABEL' ) ~ lang( 'COLON' ) }}</label><br /><span>{{ lang( 'ACP_CUSTOM_VERIFY_BADGE_DESCRIPTION' ) }}</span></dt>
 			<dd>
@@ -17,18 +15,20 @@
 				{% endif %}
 			</dd>
 		</dl>
-
+		<dl>
+			<dt><label for="reg_update_verify_again">{{ lang( 'ACP_REG_UPDATE_VERIFY_AGAIN_LABEL' ) ~ lang( 'COLON' ) }}</label><br /><span>{{ lang( 'ACP_REG_UPDATE_VERIFY_AGAIN_DESCRIPTION' ) }}</span></dt>
+			<dd>
+				<label><input type="radio" class="radio" name="reg_update_verify_again" value="1" id="reg_update_verify_again"{{ ( S_REG_UPDATE_VERIFY_AGAIN ) ? ' checked="checked"' : '' }}/> {{ lang( 'YES' ) }}</label>
+				<label><input type="radio" class="radio" name="reg_update_verify_again" value="0" id="reg_update_verify_again"{{ ( ! S_REG_UPDATE_VERIFY_AGAIN ) ? ' checked="checked"' : '' }}/> {{ lang( 'NO' ) }}</label>
+			</dd>
+		</dl>
 	</fieldset>
-
 	<fieldset>
-
 		<p class="submit-buttons" style="margin: 0;">
 			{{ S_FORM_TOKEN }}
 			<input class="button1" type="submit" id="submit" name="submit" value="{{ lang( 'SUBMIT' ) }}" />
 		</p>
-
 	</fieldset>
-
 </form>
 
 {% INCLUDE 'overall_footer.html' %}
