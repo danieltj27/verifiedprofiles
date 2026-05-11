@@ -98,6 +98,7 @@ class listener implements EventSubscriberInterface {
 			'core.acp_manage_group_initialise_data'		=> 'initialise_group_verified_data',
 			'core.acp_manage_group_request_data'		=> 'request_group_verified_data',
 			'core.group_add_user_after'					=> 'verify_group_member',
+			'core.user_set_group_attributes'			=> 'verify_accepted_group_member',
 			'core.ucp_prefs_modify_common'				=> 'ucp_add_template_vars',
 			'core.ucp_prefs_personal_update_data'		=> 'ucp_update_user_sql',
 			'core.ucp_profile_reg_details_data'			=> 'ucp_reg_details_add_tpl_vars',
@@ -154,15 +155,16 @@ class listener implements EventSubscriberInterface {
 		/**
 		 * Handle the user verification status before the badge is displayed.
 		 * 
-		 * @event danieltj.verifiedprofiles.modify_verified_user
+		 * @event danieltj.verifiedprofiles.update_username_string
 		 * @since 3.0.0-b3
+		 * @since 3.0.0-b6 Updated event name to something more descriptive.
 		 * 
 		 * @var integer $user_id       The user ID being checked for verification.
 		 * @var boolean $user_verified True if the user is verified, false if they are not
 		 *                             verified *or* they are hiding their badge.
 		 */
 		$vars = [ 'user_id', 'user_verified' ];
-		extract( $this->dispatcher->trigger_event( 'danieltj.verifiedprofiles.modify_verified_user', compact( $vars ) ) );
+		extract( $this->dispatcher->trigger_event( 'danieltj.verifiedprofiles.update_username_string', compact( $vars ) ) );
 
 		if ( $user_verified && ! in_array( $event[ 'mode' ], [ 'colour', 'username', 'profile' ], true ) ) {
 
@@ -209,7 +211,12 @@ class listener implements EventSubscriberInterface {
 			'user_verified' => $verified,
 		] );
 
-		if ( 1 === $verified ) {
+		/**
+		 * Only send this notification if the user is not already verified because
+		 * otherwise they'll get notified every single time an admin updates their
+		 * profile which we don't want.
+		 */
+		if ( ! $this->functions->is_user_verified( $event[ 'user_id' ] ) && 1 === $verified ) {
 
 			// Send a new verified notification.
 			$this->notifications->add_notifications( 'danieltj.verifiedprofiles.notification.type.verified', [
@@ -249,17 +256,11 @@ class listener implements EventSubscriberInterface {
 
 			if ( ! empty( $group_members ) ) {
 
-				$user_ids = [];
-
 				foreach ( $group_members as $user ) {
 
-					$user_ids[] = $user[ 'user_id' ];
+					$this->functions->verify_user( $user[ 'user_id' ] );
 
 				}
-
-				$this->database->sql_query( 'UPDATE ' . USERS_TABLE . ' SET ' . $this->database->sql_build_array( 'UPDATE', [
-					'user_verified'	=> 1,
-				] ) . ' WHERE ' . $this->database->sql_in_set( 'user_id', $user_ids ) );
 
 			}
 
@@ -310,17 +311,28 @@ class listener implements EventSubscriberInterface {
 
 				foreach ( $event[ 'user_id_ary' ] as $user_id ) {
 
-					$this->database->sql_query( 'UPDATE ' . USERS_TABLE . ' SET ' . $this->database->sql_build_array( 'UPDATE', [
-						'user_verified'	=> 1,
-					] ) . ' WHERE ' . $this->database->sql_build_array( 'UPDATE', [
-						'user_id'		=> $user_id,
-					] ) );
+					$this->functions->verify_user( $user_id );
 
-					// Trigger new 'verified' notification event.
-					$this->notifications->add_notifications( 'danieltj.verifiedprofiles.notification.type.verified', [
-						'item_id'	=> $this->functions->create_notification_item_id(),
-						'user_id'	=> $user_id,
-					] );
+				}
+
+			}
+
+		}
+
+	}
+
+	/**
+	 * includes/functions_user:group_user_attributes
+	 */
+	public function verify_accepted_group_member( $event ) {
+
+		if ( 'approve' === $event[ 'action' ] && $this->functions->is_group_verified( $event[ 'group_id' ] && ! empty( $event[ 'user_id_ary' ] ) ) ) {
+
+			foreach ( $event[ 'user_id_ary' ] as $user_id ) {
+
+				if ( $this->functions->is_user_verified( $user_id, false ) ) {
+
+					$this->functions->verify_user( $user_id );
 
 				}
 

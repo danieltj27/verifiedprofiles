@@ -10,6 +10,7 @@ namespace danieltj\verifiedprofiles\includes;
 
 use phpbb\config\config;
 use phpbb\db\driver\driver_interface as database;
+use phpbb\notification\manager as notifications;
 
 final class functions {
 
@@ -24,12 +25,18 @@ final class functions {
 	protected $database;
 
 	/**
+	 * @var notifications
+	 */
+	protected $notifications;
+
+	/**
 	 * Constructor
 	 */
-	public function __construct( config $config, database $database ) {
+	public function __construct( config $config, database $database, notifications $notifications ) {
 
 		$this->config = $config;
 		$this->database = $database;
+		$this->notifications = $notifications;
 
 	}
 
@@ -114,6 +121,42 @@ final class functions {
 		if ( false === $group ) {
 
 			return false;
+
+		}
+
+		return true;
+
+	}
+
+	/**
+	 * Verify a user profile.
+	 * 
+	 * @since int  $user_id The user ID used to verify the user.
+	 * @since bool $notify  Flag to send notification or not. Defaults tot true.
+	 * 
+	 * @return bool  True if verified, false if not.
+	 */
+	public function verify_user( int $user_id, bool $notify = true ) : bool {
+
+		$this->database->sql_query( 'UPDATE ' . USERS_TABLE . ' SET ' . $this->database->sql_build_array( 'UPDATE', [
+			'user_verified'	=> 1,
+		] ) . ' WHERE ' . $this->database->sql_build_array( 'SELECT', [
+			'user_id'		=> $user_id,
+			'user_verified'	=> 0,
+		] ) );
+
+		if ( ! $this->database->sql_affectedrows() ) {
+
+			return false;
+
+		}
+
+		if ( true === $notify ) {
+
+			$this->notifications->add_notifications( 'danieltj.verifiedprofiles.notification.type.verified', [
+				'item_id'	=> $this->create_notification_item_id(),
+				'user_id'	=> $user_id,
+			] );
 
 		}
 

@@ -19,6 +19,7 @@ services:
         arguments:
             - '@config'
             - '@dbal.conn'
+            - '@notification_manager'
 
     danieltj.verifiedprofiles.notification.type.verified:
         class: danieltj\verifiedprofiles\notification\type\verified
