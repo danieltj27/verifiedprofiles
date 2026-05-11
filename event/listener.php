@@ -94,7 +94,7 @@ class listener implements EventSubscriberInterface {
 			'core.modify_username_string'				=> 'update_username_string',
 			'core.acp_users_modify_profile'				=> 'acp_update_profile_data',
 			'core.acp_users_profile_modify_sql_ary'		=> 'acp_update_sql_data',
-			'core.acp_manage_group_display_form'		=> 'add_group_verified_setting',
+			'core.acp_manage_group_display_form'		=> 'add_group_verified_settings',
 			'core.acp_manage_group_initialise_data'		=> 'initialise_group_verified_data',
 			'core.acp_manage_group_request_data'		=> 'request_group_verified_data',
 			'core.group_add_user_after'					=> 'verify_group_member',
@@ -224,7 +224,56 @@ class listener implements EventSubscriberInterface {
 	/**
 	 * includes/acp/acp_groups:main
 	 */
-	public function add_group_verified_setting( $event ) {
+	public function add_group_verified_settings( $event ) {
+
+		/**
+		 * Only verify the members of this group if the correct button was
+		 * pressed and this group has verification enabled. Otherwise don't.
+		 */
+		if (
+			$this->language->lang( 'ACP_VERIFY_EXISTING_GROUP_MEMBERS_BUTTON' ) === $this->request->variable( 'verify_existing_group_members', '0' ) &&
+			1 === (int) $event[ 'group_row' ][ 'group_verified' ]
+		) {
+
+			// Fetch existing members (ignore pending membership).
+			$result = $this->database->sql_query( 'SELECT * FROM ' . USER_GROUP_TABLE . ' WHERE ' .
+				$this->database->sql_build_array( 'SELECT', [
+					'group_id'		=> (int) $event[ 'group_id' ],
+					'user_pending'	=> 0,
+				] )
+			);
+
+			$group_members = $this->database->sql_fetchrowset( $result );
+			
+			$this->database->sql_freeresult( $result );
+
+			if ( ! empty( $group_members ) ) {
+
+				$user_ids = [];
+
+				foreach ( $group_members as $user ) {
+
+					$user_ids[] = $user[ 'user_id' ];
+
+				}
+
+				$this->database->sql_query( 'UPDATE ' . USERS_TABLE . ' SET ' . $this->database->sql_build_array( 'UPDATE', [
+					'user_verified'	=> 1,
+				] ) . ' WHERE ' . $this->database->sql_in_set( 'user_id', $user_ids ) );
+
+			}
+
+			trigger_error( $this->language->lang( 'ACP_VERIFIED_GROUP_MEMBERS_SUCCESS' ) . adm_back_link(
+				append_sid( './index.php', [
+					'i'			=> 'acp_groups',
+					'icat'		=> $this->request->variable( 'icat', '0' ),
+					'mode'		=> 'manage',
+					'action'	=> 'edit',
+					'g'			=> $event[ 'group_id' ],
+				] )
+			) );
+
+		}
 
 		$this->template->assign_vars( [
 			'S_GROUP_VERIFIED' => $this->functions->is_group_verified( $event[ 'group_id' ] )

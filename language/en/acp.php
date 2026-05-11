@@ -34,11 +34,14 @@ $lang = array_merge( $lang, [
 	'ACP_REG_UPDATE_VERIFY_AGAIN_LABEL'			=> 'Reset verification after changes',
 	'ACP_REG_UPDATE_VERIFY_AGAIN_DESCRIPTION'	=> 'Select whether a user must be verified again if they change their email address or username.',
 
+	'ACP_VERIFY_EXISTING_GROUP_MEMBERS_BUTTON'	=> 'Verify existing group members',
+
 	// CONFIRMATIONS
 	'ACP_VERIFICATION_SETTINGS_SAVED'		=> 'Verification settings saved successfully.',
 	'ACP_VERIFICATION_BADGE_ERROR_SIZE'		=> 'The image you uploaded has an invalid file size.',
 	'ACP_VERIFICATION_BADGE_ERROR_TYPE'		=> 'The image you uploaded has an invalid file type.',
-	'ACP_VERIFICATION_BADGE_ERROR_SAVe'		=> 'The image you uploaded cannot be uploaded to the server.',
+	'ACP_VERIFICATION_BADGE_ERROR_SAVE'		=> 'The image you uploaded cannot be uploaded to the server.',
+	'ACP_VERIFIED_GROUP_MEMBERS_SUCCESS'	=> 'All existing group members have been successfully verified.',
 
 	// LOGS
 	'ACP_VERIFIED_PROFILES_LOG_SAVED'		=> '<strong>Verified Profiles</strong>:<br />» Verification settings have been updated.',

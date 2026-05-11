@@ -77,7 +77,7 @@ final class functions {
 			$new_auth = new \phpbb\auth\auth();
 			$new_auth->acl( $user );
 
-			if ( ! $new_auth->acl_get( 'u_hide_verified_badge' ) ) {
+			if ( $new_auth->acl_get( 'u_hide_verified_badge' ) && 0 === $user[ 'user_verify_visibility' ] ) {
 
 				return false;
 
