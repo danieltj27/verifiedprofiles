@@ -326,15 +326,11 @@ class listener implements EventSubscriberInterface {
 	 */
 	public function verify_accepted_group_member( $event ) {
 
-		if ( 'approve' === $event[ 'action' ] && $this->functions->is_group_verified( $event[ 'group_id' ] && ! empty( $event[ 'user_id_ary' ] ) ) ) {
+		if ( 'approve' === $event[ 'action' ] && $this->functions->is_group_verified( $event[ 'group_id' ] ) && ! empty( $event[ 'user_id_ary' ] ) ) {
 
 			foreach ( $event[ 'user_id_ary' ] as $user_id ) {
 
-				if ( $this->functions->is_user_verified( $user_id, false ) ) {
-
-					$this->functions->verify_user( $user_id );
-
-				}
+				$this->functions->verify_user( $user_id );
 
 			}
 
