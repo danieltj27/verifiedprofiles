@@ -105,7 +105,7 @@ class settings_module {
 
 					$log->add( 'admin', $user->data[ 'user_id' ], $user->data[ 'user_ip' ], 'ACP_VERIFIED_PROFILES_LOG_ERROR_SAVE', time(), [] );
 
-					trigger_error( $language->lang( 'ACP_VERIFICATION_BADGE_ERROR_SAVe' ) . adm_back_link( $this->u_action ), E_USER_WARNING );
+					trigger_error( $language->lang( 'ACP_VERIFICATION_BADGE_ERROR_SAVE' ) . adm_back_link( $this->u_action ), E_USER_WARNING );
 
 				}
 

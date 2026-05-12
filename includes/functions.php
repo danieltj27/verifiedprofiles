@@ -15,17 +15,17 @@ use phpbb\notification\manager as notifications;
 final class functions {
 
 	/**
-	 * @var config
+	 * @var phpbb\config\config
 	 */
 	protected $config;
 
 	/**
-	 * @var driver_interface
+	 * @var phpbb\db\driver\driver_interface
 	 */
 	protected $database;
 
 	/**
-	 * @var notifications
+	 * @var phpbb\notification\manager
 	 */
 	protected $notifications;
 
@@ -43,14 +43,14 @@ final class functions {
 	/**
 	 * Returns whether the user is verified or not.
 	 *
-	 * @param integer $user_id    The user ID to check if they are verified.
-	 * @param boolean $hide_check (optional) A flag that determines whether the badge
-	 *                            visibility should be checked too. Defaults to true,
-	 *                            pass false to just check if they are verified.
+	 * @param int  $user_id    The user ID to check if they are verified.
+	 * @param bool $hide_check (optional) A flag that determines whether the badge
+	 *                          visibility should be checked too. Defaults to true,
+	 *                          pass false to just check if they are verified.
 	 * 
-	 * @return boolean  True if user is verified, false if not.
+	 * @return bool  True if user is verified, false if not.
 	 */
-	public function is_user_verified( $user_id, $hide_check = true ) {
+	public function is_user_verified( int $user_id, bool $hide_check = true ) : bool {
 
 		$user_id = (int) $user_id;
 
@@ -99,11 +99,11 @@ final class functions {
 	/**
 	 * Returns whether a group auto verifies it's members.
 	 * 
-	 * @param  integer $group_id The group ID to check for verification.
+	 * @param int $group_id The group ID to check for verification.
 	 * 
-	 * @return boolean  True if groupdoes verify members, false if not.
+	 * @return bool  True if groupdoes verify members, false if not.
 	 */
-	public function is_group_verified( $group_id ) {
+	public function is_group_verified( int $group_id ) : bool {
 
 		$group_id = (int) $group_id;
 
@@ -167,13 +167,13 @@ final class functions {
 	/**
 	 * Return the URL of a custom verification badge.
 	 * 
-	 * @param boolean $strict (optional) A flag used to decided whether to check just the
+	 * @param bool $strict (optional) A flag used to decided whether to check just the
 	 *                        database or the file system as well for the presence of a
 	 *                        custom badge. It's strongly advised that this is set to true.
 	 * 
-	 * @return boolean|string $url The URL of the custom badge or false if one is not set.
+	 * @return bool|string $url The URL of the custom badge or false if one is not set.
 	 */
-	public function has_custom_badge( $strict = true ) {
+	public function has_custom_badge( bool $strict = true ) : bool|string {
 
 		global $phpbb_root_path;
 
@@ -202,7 +202,7 @@ final class functions {
 	 * 
 	 * @return bool  True if verification is required again, false if not.
 	 */
-	public function require_user_verify_after_update() {
+	public function require_user_verify_after_update() : bool {
 
 		if ( 1 === (int) $this->config[ 'verified_profiles_reg_update_verify_again' ] ) {
 
@@ -217,9 +217,9 @@ final class functions {
 	/**
 	 * Return a unique identifier for notifications.
 	 * 
-	 * @return integer  The integer for an notification item ID.
+	 * @return int  The integer for an notification item ID.
 	 */
-	public function create_notification_item_id() {
+	public function create_notification_item_id() : int {
 
 		$item_id = (int) $this->config[ 'verified_profiles_notify_item_id' ];
 

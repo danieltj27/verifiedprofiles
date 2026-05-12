@@ -23,5 +23,5 @@ $lang = array_merge( $lang, [
 	'VERIFIED_PROFILES_NOTIFICATIONS_VERIFIED_REASON'	=> 'Your profile has been successfully verified.',
 
 	// UCP
-	'VERIFIED_PROFILES_NOTIFICATIONS_SAMPLE'			=> 'Your proifle becomes verified',
+	'VERIFIED_PROFILES_NOTIFICATIONS_SAMPLE'			=> 'Your profile becomes verified',
 ] );

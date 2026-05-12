@@ -109,7 +109,7 @@ class listener implements EventSubscriberInterface {
 	}
 
 	/**
-	 * Add Languages
+	 * phpbb/user:setup
 	 */
 	public function add_languages( $event ) {
 
@@ -123,7 +123,7 @@ class listener implements EventSubscriberInterface {
 	}
 
 	/**
-	 * Add Permissions
+	 * phpbb/permissions:__construct
 	 */
 	public function add_permissions( $event ) {
 
