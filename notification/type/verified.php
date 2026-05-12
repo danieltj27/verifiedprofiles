@@ -11,12 +11,12 @@ namespace danieltj\verifiedprofiles\notification\type;
 class verified extends \phpbb\notification\type\base {
 
 	/**
-	 * @var user_loader \phpbb\user_loader
+	 * @var phpbb\user_loader
 	 */
 	protected $user_loader;
 
 	/**
-	 * @var functions \danieltj\verifiedprofiles\includes\functions
+	 * @var danieltj\verifiedprofiles\includes\functions
 	 */
 	protected $functions;
 

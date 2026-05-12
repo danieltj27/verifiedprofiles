@@ -11,17 +11,17 @@ namespace danieltj\verifiedprofiles\acp;
 class settings_module {
 
 	/**
-	 * @var $action;
+	 * @var string
 	 */
 	public $u_action;
 
 	/**
-	 * @var $tpl_name;
+	 * @var string
 	 */
 	public $tpl_name;
 
 	/**
-	 * @var $page_title;
+	 * @var string
 	 */
 	public $page_title;
 

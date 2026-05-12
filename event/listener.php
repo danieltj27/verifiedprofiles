@@ -22,47 +22,47 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class listener implements EventSubscriberInterface {
 
 	/**
-	 * @var auth
+	 * @var phpbb\auth\auth
 	 */
 	protected $auth;
 
 	/**
-	 * @var database
+	 * @var phpbb\db\driver\driver_interface
 	 */
 	protected $database;
 
 	/**
-	 * @var dispatcher
+	 * @var phpbb\event\dispatcher_interface
 	 */
 	protected $dispatcher;
 
 	/**
-	 * @var language
+	 * @var phpbb\language\language
 	 */
 	protected $language;
 
 	/**
-	 * @var notifications
+	 * @var phpbb\notification\manager
 	 */
 	protected $notifications;
 
 	/**
-	 * @var request
+	 * @var phpbb\request\request
 	 */
 	protected $request;
 
 	/**
-	 * @var template
+	 * @var phpbb\template\template
 	 */
 	protected $template;
 
 	/**
-	 * @var user
+	 * @var phpbb\user
 	 */
 	protected $user;
 
 	/**
-	 * @var functions
+	 * @var danieltj\verifiedprofiles\includes\functions
 	 */
 	protected $functions;
 
